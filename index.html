@@ -3,790 +3,690 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grammar Master | Unit 1: Present Perfect & Present Perfect Continuous</title>
-  
-  <!-- Google Fonts: Plus Jakarta Sans for English & Cairo for Arabic -->
+  <title>Grammar-Pro | Unit 1: Present Perfect & Present Perfect Continuous</title>
+
+  <!-- Google Fonts: Newsreader (Editorial Serif) + Plus Jakarta Sans + Cairo (Arabic) + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <!-- Custom Stylesheet -->
+
+  <!-- Editorial Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Floating Audio & Confetti Canvas -->
-  <canvas id="confetti-canvas"></canvas>
+  <!-- Navigation Bar -->
+  <header class="site-header">
+    <div class="container header-row">
+      
+      <a href="#" class="site-identity">
+        <div class="identity-mark">G</div>
+        <div class="identity-text">
+          <h1>Grammar-Pro</h1>
+          <span>Unit 1 Masterclass</span>
+        </div>
+      </a>
 
-  <!-- Top Navigation Bar -->
-  <header>
-    <div class="nav-container">
-      <div class="brand">
-        <i class="fa-solid fa-graduation-cap"></i>
-        <span>GrammarPro</span>
-        <span class="brand-badge">Unit 1 Master</span>
-      </div>
-
-      <!-- Navigation Tabs -->
-      <nav class="nav-tabs" role="tablist">
-        <button class="tab-btn active" data-tab="summary">
-          <i class="fa-solid fa-bolt"></i>
-          <span>Summary & Cheat Sheet</span>
+      <!-- Primary Navigation Tabs -->
+      <nav class="primary-nav" role="tablist">
+        <button type="button" class="nav-tab active" data-section="summary">
+          <i class="fa-solid fa-book"></i>
+          <span>Curriculum Guide</span>
         </button>
-        <button class="tab-btn" data-tab="deep-dive">
-          <i class="fa-solid fa-book-open"></i>
-          <span>Rules Deep-Dive</span>
-        </button>
-        <button class="tab-btn" data-tab="comparison">
-          <i class="fa-solid fa-code-compare"></i>
+        <button type="button" class="nav-tab" data-section="comparison">
+          <i class="fa-solid fa-scale-balanced"></i>
           <span>Comparison & Verb Lab</span>
         </button>
-        <button class="tab-btn" data-tab="been-gone">
+        <button type="button" class="nav-tab" data-section="travel">
           <i class="fa-solid fa-plane-departure"></i>
-          <span>Been vs Gone Visualizer</span>
+          <span>Been vs Gone</span>
         </button>
-        <button class="tab-btn" data-tab="sort-game">
-          <i class="fa-solid fa-gamepad"></i>
-          <span>Since vs For Game</span>
+        <button type="button" class="nav-tab" data-section="sorter">
+          <i class="fa-solid fa-arrows-split-up-and-left"></i>
+          <span>Since vs For</span>
         </button>
-        <button class="tab-btn" data-tab="quiz">
-          <i class="fa-solid fa-circle-question"></i>
-          <span>Interactive Exam (17 Qs)</span>
+        <button type="button" class="nav-tab" data-section="exam">
+          <i class="fa-solid fa-pen-nib"></i>
+          <span>17-Item Exam Studio</span>
+        </button>
+        <button type="button" class="nav-tab" data-section="dossier">
+          <i class="fa-solid fa-feather-pointed"></i>
+          <span>Official Notes Key</span>
         </button>
       </nav>
 
-      <!-- Action Controls -->
-      <div class="header-controls">
-        <button class="icon-btn" id="theme-toggle" title="Toggle Light/Dark Theme">
+      <!-- Global Actions -->
+      <div class="header-actions">
+        <button type="button" class="btn-icon" id="theme-toggle-btn" title="Toggle Light / Dark Surface">
           <i class="fa-solid fa-sun"></i>
         </button>
-        <button class="icon-btn" id="sound-toggle" title="Sound Effects ON/OFF">
+        <button type="button" class="btn-icon" id="sound-toggle-btn" title="Toggle Audio Feedback">
           <i class="fa-solid fa-volume-high"></i>
         </button>
-        <button class="icon-btn" onclick="window.print()" title="Print Summary / Save PDF">
+        <button type="button" class="btn-icon" onclick="window.print()" title="Print Study Folio">
           <i class="fa-solid fa-print"></i>
         </button>
       </div>
+
     </div>
   </header>
 
-  <!-- Main Content Wrapper -->
-  <main>
+  <!-- Main Body Content -->
+  <main class="container" style="padding-bottom: 4rem;">
 
-    <!-- Hero Banner with Live Search -->
-    <section class="hero">
-      <h1>Unit 1: Present Perfect & Continuous</h1>
-      <p class="ar-text" style="font-size: 1.3rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.3rem;">
-        المضارع التام البسيط والمضارع التام المستمر - شرح تفاعلي شامل وامتحانات محلولة
-      </p>
-      <p class="hero-sub">
-        Master every formula, keyword rule, stative verb trap, and cause-and-effect relationship with instant active learning widgets.
-      </p>
-
-      <div class="hero-stats">
-        <div class="hero-stat-pill">
-          <i class="fa-solid fa-check-circle" style="color: #34d399;"></i>
-          <span>13 Core Rules & Formulas</span>
-        </div>
-        <div class="hero-stat-pill">
-          <i class="fa-solid fa-sliders" style="color: #60a5fa;"></i>
-          <span>10 Dual-Meaning Verbs Lab</span>
-        </div>
-        <div class="hero-stat-pill">
-          <i class="fa-solid fa-trophy" style="color: #fbbf24;"></i>
-          <span>17 Interactive Exam Questions</span>
-        </div>
-      </div>
-
-      <!-- Quick Interactive Filter Search -->
-      <div class="search-wrapper">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input 
-          type="text" 
-          id="global-search" 
-          class="search-input" 
-          placeholder="Search any keyword or rule (e.g., yet, since, stative, momentary, been to, passive)..."
-        >
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- TAB 1: SUMMARY & CHEAT SHEET               -->
-    <!-- ========================================== -->
-    <section id="tab-summary" class="tab-content active">
-      <div class="grid-2">
-        <!-- Present Perfect Simple Quick Card -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">
-              <i class="fa-solid fa-circle-check" style="color: #38bdf8;"></i>
-              <span>Present Perfect Simple</span>
-            </div>
-            <span class="badge badge-blue ar-text">المضارع التام البسيط</span>
-          </div>
-
-          <div class="formula-box">
-            <div class="formula-label">
-              <span>Active Form (المبني للمعلوم)</span>
-              <span class="badge badge-blue">Active</span>
-            </div>
-            <div class="formula-code">I / You / We / They + have ('ve) + P.P.</div>
-            <div class="formula-code" style="margin-top: 0.3rem;">He / She / It + has ('s) + P.P.</div>
-          </div>
-
-          <div class="formula-box" style="border-left-color: #a855f7;">
-            <div class="formula-label">
-              <span>Passive Form (المبني للمجهول)</span>
-              <span class="badge badge-purple">Passive</span>
-            </div>
-            <div class="formula-code">Object + have / has + been + P.P.</div>
-          </div>
-
-          <h4 style="margin: 1rem 0 0.5rem 0; font-size: 0.95rem; color: #38bdf8;">Key Usage Highlights:</h4>
-          <ul style="padding-left: 1.2rem; font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1rem;">
-            <li><strong>Unfinished past:</strong> Began in past, still true now (<em>"I have felt this pain since I arrived"</em>).</li>
-            <li><strong>Life experiences:</strong> Without stating exact past time (<em>"I have attended three meetings"</em>).</li>
-            <li><strong>Past action with present result:</strong> (<em>"I've eaten enough, so I don't want food"</em>).</li>
-            <li><strong>Count & quantity of achievements:</strong> (<em>"I have written 3 emails / passed 2 exams"</em>).</li>
-          </ul>
-
-          <div class="example-box">
-            <div class="ex-en">Active: Radwa <span class="highlight">has washed</span> the dishes.</div>
-            <div class="ex-en">Passive: The dishes <span class="highlight-green">have been washed</span> by Radwa.</div>
-            <div class="ex-ar ar-text">المعلوم: رضوى غسلت الأطباق | المجهول: الأطباق تم غسلها بواسطة رضوى.</div>
-          </div>
-        </div>
-
-        <!-- Present Perfect Continuous Quick Card -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">
-              <i class="fa-solid fa-spinner" style="color: #ec4899;"></i>
-              <span>Present Perfect Continuous</span>
-            </div>
-            <span class="badge badge-rose ar-text">المضارع التام المستمر</span>
-          </div>
-
-          <div class="formula-box" style="border-left-color: #ec4899;">
-            <div class="formula-label">
-              <span>Form (التكوين)</span>
-              <span class="badge badge-rose">Active</span>
-            </div>
-            <div class="formula-code">Subject + have / has + been + (verb + ing)</div>
-          </div>
-
-          <div class="formula-box" style="border-left-color: #f59e0b;">
-            <div class="formula-label">
-              <span>Passive Form (المجهول - نادر الاستخدام)</span>
-              <span class="badge badge-amber">Passive</span>
-            </div>
-            <div class="formula-code">Obj + have/has + been + P.P. (يُفضل البسيط دائماً في المجهول)</div>
-          </div>
-
-          <h4 style="margin: 1rem 0 0.5rem 0; font-size: 0.95rem; color: #ec4899;">Key Usage Highlights:</h4>
-          <ul style="padding-left: 1.2rem; font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1rem;">
-            <li><strong>Ongoing activity:</strong> Started in past and actively continues (<em>"Waiting for an hour"</em>).</li>
-            <li><strong>Recent continuous habit:</strong> (<em>"I've been learning how to swim recently"</em>).</li>
-            <li><strong>Explaining present fatigue/state:</strong> (<em>"She is tired. She has been working all day"</em>).</li>
-            <li><strong>Focuses on the effort & activity itself</strong>, NOT on the final finished count.</li>
-          </ul>
-
-          <div class="example-box">
-            <div class="ex-en">Omar <span class="highlight-rose">has been working</span> on the report for 3 hours.</div>
-            <div class="ex-ar ar-text">عمر يعمل على التقرير منذ 3 ساعات وما زال يعمل حتى الآن.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Golden Rules Banner: When Continuous is FORBIDDEN -->
-      <div class="card" style="border: 2px solid rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.05); margin-bottom: 2rem;">
-        <div class="card-header" style="border-color: rgba(239, 68, 68, 0.2);">
-          <div class="card-title" style="color: #f87171;">
-            <i class="fa-solid fa-ban"></i>
-            <span>3 Golden Rules: When Continuous is FORBIDDEN! (موانع المستمر)</span>
-          </div>
-          <span class="badge badge-rose ar-text">هام جداً للامتحانات</span>
-        </div>
-
-        <div class="grid-3" style="margin-bottom: 0;">
-          <!-- Restriction 1: Momentary Verbs -->
-          <div style="background: rgba(15, 23, 42, 0.6); padding: 1.2rem; border-radius: 12px; border: 1px solid var(--card-border);">
-            <h4 style="color: #fb7185; margin-bottom: 0.4rem;">
-              <i class="fa-solid fa-bolt"></i> 1. Momentary Verbs
-            </h4>
-            <div class="ar-text" style="font-weight: 700; font-size: 0.92rem; margin-bottom: 0.5rem;">
-              الأفعال اللحظية (لا تستغرق وقتاً)
-            </div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem;">
-              Verbs like <code>lose, find, die, arrive, leave, stop, finish, end, drop, break, score</code> happen in a split second.
+    <!-- Masthead Hero -->
+    <header class="hero-masthead">
+      <div class="hero-grid">
+        <div class="hero-main">
+          <h2>Present Perfect & Present Perfect Continuous</h2>
+          
+          <div class="hero-arabic-callout ar-font">
+            <h3 style="font-size: 1.35rem; color: var(--ink-cobalt); margin-bottom: 0.2rem;">
+              الوحدة الأولى: المضارع التام البسيط والمضارع التام المستمر
+            </h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">
+              الدراسة الشاملة لجميع التراكيب النحوية، الكلمات الدالة، موانع الاستمرار، وأفعال الحالة مع الامتحان النموذجي المحلول.
             </p>
-            <div style="font-size: 0.88rem; font-weight: 600;">
-              <span style="color: #34d399;">✓ I have received an email.</span><br>
-              <span style="color: #f87171;">✗ I have been receiving (Wrong!)</span>
+          </div>
+
+          <p class="hero-lead">
+            An authoritative, active learning platform synthesizing the core rules, stative verb restrictions, momentary predicates, and cause-effect conjunctions with 17 verified examination items and authoritative explanatory notes.
+          </p>
+
+          <div class="hero-features-list">
+            <span class="feature-pill"><i class="fa-solid fa-check" style="color:var(--ink-emerald);"></i> 13 Core Formula Rules</span>
+            <span class="feature-pill"><i class="fa-solid fa-flask" style="color:var(--ink-cobalt);"></i> 10 Dual-Meaning Verbs Lab</span>
+            <span class="feature-pill"><i class="fa-solid fa-certificate" style="color:var(--ink-amber);"></i> 17 Official Item Rationales</span>
+          </div>
+        </div>
+
+        <!-- Quick Syllabus Card -->
+        <aside class="hero-quick-card">
+          <div style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.6rem;">
+            Unit 1 Core Focus
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Mastering the critical distinction between completed result versus ongoing activity duration, with strict constraints on stative and momentary verbs.
+          </p>
+          
+          <div style="background: var(--bg-well); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.85rem; margin-bottom: 0.85rem;">
+            <div style="color: var(--ink-cobalt); font-weight: 700; margin-bottom: 0.2rem;">Key Distinction</div>
+            <div>Simple focuses on <strong>result / units completed</strong>; Continuous emphasizes <strong>duration & effort</strong>.</div>
+          </div>
+
+          <!-- Quick Search Filter -->
+          <div style="position: relative;">
+            <input 
+              type="text" 
+              id="master-search-input" 
+              class="workbench-input" 
+              style="width: 100%; padding-left: 2rem; font-size: 0.88rem;"
+              placeholder="Search any keyword or rule (yet, stative, since, been to)..."
+            >
+            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.8rem; color: var(--text-muted);"></i>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <!-- ========================================================== -->
+    <!-- SECTION 1: CURRICULUM GUIDE & RULES LEDGER                 -->
+    <!-- ========================================================== -->
+    <section id="section-summary" class="editorial-section active">
+      <div class="section-head">
+        <div>
+          <h3 class="section-title">The Master Rules Ledger</h3>
+          <span class="section-caption">Comprehensive structural breakdown of Unit 1 English Grammar</span>
+        </div>
+        <span class="ar-font" style="font-size: 0.95rem; color: var(--text-muted);">الشرح التفصيلي لجميع نقاط وقواعد الوحدة</span>
+      </div>
+
+      <!-- Core Formation Cards -->
+      <div class="grid-columns-2">
+        <!-- Present Perfect Simple -->
+        <article class="rule-card">
+          <div class="card-label-bar">
+            <span class="rule-index">RULE 01 &bull; SIMPLE</span>
+            <span class="rule-tag">Present Perfect Simple</span>
+          </div>
+
+          <h4 style="font-size: 1.25rem; font-family: var(--font-serif); margin-bottom: 0.4rem;">
+            Formation: Active & Passive
+          </h4>
+          <p class="ar-font" style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+            التكوين في المبني للمعلوم والمجهول للمضارع التام البسيط
+          </p>
+
+          <div class="formula-block">
+            <div class="formula-role">Active (المبني للمعلوم)</div>
+            <div class="formula-syntax">I / You / We / They + have ('ve) + P.P.</div>
+            <div class="formula-syntax" style="margin-top: 0.25rem;">He / She / It + has ('s) + P.P.</div>
+          </div>
+
+          <div class="formula-block" style="border-left-color: var(--ink-violet);">
+            <div class="formula-role">Passive (المبني للمجهول)</div>
+            <div class="formula-syntax">Object + have / has + been + P.P.</div>
+          </div>
+
+          <div class="annotation-group">
+            <div class="annotation-item">
+              <div class="annotation-en">Active: Radwa <strong>has washed</strong> the dishes.</div>
+              <div class="annotation-en">Passive: The dishes <strong>have been washed</strong> by Radwa.</div>
+              <div class="annotation-ar ar-font">رضوى غسلت الأطباق | تم غسل الأطباق بواسطة رضوى.</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Present Perfect Continuous -->
+        <article class="rule-card">
+          <div class="card-label-bar">
+            <span class="rule-index" style="color:var(--ink-violet); background:var(--ink-violet-soft);">RULE 02 &bull; CONTINUOUS</span>
+            <span class="rule-tag">Present Perfect Continuous</span>
+          </div>
+
+          <h4 style="font-size: 1.25rem; font-family: var(--font-serif); margin-bottom: 0.4rem;">
+            Formation & Ongoing Aspect
+          </h4>
+          <p class="ar-font" style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+            تكوين المضارع التام المستمر والتركيز على استمرار النشاط
+          </p>
+
+          <div class="formula-block" style="border-left-color: var(--ink-violet);">
+            <div class="formula-role">Form (التكوين)</div>
+            <div class="formula-syntax">Subject + have / has + been + (verb + ing)</div>
+          </div>
+
+          <div class="formula-block" style="border-left-color: var(--ink-amber);">
+            <div class="formula-role">Passive Voice (المجهول - يُفضل البسيط دائماً)</div>
+            <div class="formula-syntax">Object + have / has + been + P.P.</div>
+          </div>
+
+          <div class="annotation-group">
+            <div class="annotation-item">
+              <div class="annotation-en">Omar <strong>has been working</strong> on the report for three hours.</div>
+              <div class="annotation-ar ar-font">عمر مستمر في العمل على التقرير منذ 3 ساعات وحتى الآن.</div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- The 3 Core Prohibitions Callout -->
+      <div class="editorial-danger">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h4 style="font-size: 1.15rem; font-family: var(--font-serif); color: var(--ink-crimson); font-weight: 700;">
+            <i class="fa-solid fa-ban"></i> The Three Absolute Prohibitions on Continuous Tense (موانع استخدام المستمر)
+          </h4>
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--ink-crimson); text-transform: uppercase;">Examination Traps</span>
+        </div>
+
+        <div class="grid-columns-3" style="margin-bottom: 0; margin-top: 1rem;">
+          <div style="background: var(--bg-surface); padding: 1.2rem; border-radius: var(--radius-sm); border: 1px solid var(--border-hairline);">
+            <div style="color: var(--ink-crimson); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem;">
+              1. Momentary Verbs
+            </div>
+            <div class="ar-font" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+              أفعال لحظية لا تستغرق وقتاً
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 0.6rem;">
+              <code>lose, find, die, arrive, leave, stop, start, finish, drop, break, score</code>
+            </p>
+            <div style="font-size: 0.84rem; font-family: var(--font-mono);">
+              <span style="color: var(--ink-emerald);">✓ have received</span><br>
+              <span style="color: var(--ink-crimson);">✗ have been receiving</span>
             </div>
           </div>
 
-          <!-- Restriction 2: Number of Occurrences / Counts -->
-          <div style="background: rgba(15, 23, 42, 0.6); padding: 1.2rem; border-radius: 12px; border: 1px solid var(--card-border);">
-            <h4 style="color: #fbbf24; margin-bottom: 0.4rem;">
-              <i class="fa-solid fa-list-ol"></i> 2. Quantity & Counts
-            </h4>
-            <div class="ar-text" style="font-weight: 700; font-size: 0.92rem; margin-bottom: 0.5rem;">
+          <div style="background: var(--bg-surface); padding: 1.2rem; border-radius: var(--radius-sm); border: 1px solid var(--border-hairline);">
+            <div style="color: var(--ink-amber); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem;">
+              2. Stated Quantities & Counts
+            </div>
+            <div class="ar-font" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem;">
               ذكر عدد المرات أو كمية الإنجاز
             </div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem;">
-              With <code>two/three..., many, several, a lot of, all + noun</code>: use Simple because the focus is on completed units!
+            <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 0.6rem;">
+              <code>two/three..., many, a few, several, a lot of, all + noun</code>
             </p>
-            <div style="font-size: 0.88rem; font-weight: 600;">
-              <span style="color: #34d399;">✓ I have sent three emails.</span><br>
-              <span style="color: #f87171;">✗ I have been sending three (Wrong!)</span>
+            <div style="font-size: 0.84rem; font-family: var(--font-mono);">
+              <span style="color: var(--ink-emerald);">✓ have sent three emails</span><br>
+              <span style="color: var(--ink-crimson);">✗ have been sending three</span>
             </div>
           </div>
 
-          <!-- Restriction 3: Stative Verbs -->
-          <div style="background: rgba(15, 23, 42, 0.6); padding: 1.2rem; border-radius: 12px; border: 1px solid var(--card-border);">
-            <h4 style="color: #38bdf8; margin-bottom: 0.4rem;">
-              <i class="fa-solid fa-brain"></i> 3. Stative Verbs
-            </h4>
-            <div class="ar-text" style="font-weight: 700; font-size: 0.92rem; margin-bottom: 0.5rem;">
-              أفعال الحالة والمشاعر والإدراك
+          <div style="background: var(--bg-surface); padding: 1.2rem; border-radius: var(--radius-sm); border: 1px solid var(--border-hairline);">
+            <div style="color: var(--ink-cobalt); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem;">
+              3. Stative Verbs
             </div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem;">
-              Verbs of cognition, emotion, possession, senses: <code>know, like, believe, understand, own, contain</code>.
+            <div class="ar-font" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+              أفعال الحالة والإدراك والمشاعر والملكية
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 0.6rem;">
+              <code>know, like, believe, understand, belong to, own, contain</code>
             </p>
-            <div style="font-size: 0.88rem; font-weight: 600;">
-              <span style="color: #34d399;">✓ We have known each other 10 yrs.</span><br>
-              <span style="color: #f87171;">✗ We have been knowing (Wrong!)</span>
+            <div style="font-size: 0.84rem; font-family: var(--font-mono);">
+              <span style="color: var(--ink-emerald);">✓ have known each other</span><br>
+              <span style="color: var(--ink-crimson);">✗ have been knowing</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Quick Keywords Cheat Matrix -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fa-solid fa-key" style="color: #fbbf24;"></i>
-            <span>Keywords & Golden Clues (الكلمات الدالة وصيغ الامتحانات)</span>
-          </div>
-        </div>
+      <!-- Keywords & Formulas Matrix -->
+      <div style="margin-top: 2rem;">
+        <h4 style="font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 0.8rem;">
+          Keywords, Positions & Examination Formulas
+        </h4>
 
-        <div class="matrix-container" style="margin-bottom: 0;">
-          <table class="matrix-table">
+        <div class="ledger-wrapper">
+          <table class="ledger-table">
             <thead>
               <tr>
-                <th>Keyword (الكلمة)</th>
-                <th>Position & Condition (الموضع والشروط)</th>
-                <th>Example (مثال تطبيقي)</th>
-                <th>Arabic Rule (القاعدة بالعربية)</th>
+                <th>Keyword</th>
+                <th>Grammatical Placement & Conditions</th>
+                <th>Exemplary Construction</th>
+                <th>Arabic Rationale (الشرح والقاعدة)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
+                <td><strong>yet</strong></td>
+                <td>Placed at the end of negative statements and interrogative questions.</td>
+                <td><em>"Have you arrived home <strong>yet</strong>?"</em></td>
+                <td class="ar-font">للتعبير عن حدث متوقع حدوثه حتى الآن في نهاية النفي والسؤال.</td>
+              </tr>
+              <tr>
                 <td><strong>just</strong></td>
-                <td>بين have/has والتصريف الثالث (P.P.)</td>
-                <td><em>I have <strong>just</strong> returned home.</em></td>
-                <td class="ar-text">للتعبير عن أحداث تمت من فترة وجيزة جداً (منذ لحظات).</td>
+                <td>Between the auxiliary (have/has) and past participle (P.P.).</td>
+                <td><em>"I have <strong>just</strong> returned home."</em></td>
+                <td class="ar-font">للتعبير عن أحداث تمت منذ فترة وجيزة جداً (منذ لحظات).</td>
               </tr>
               <tr>
                 <td><strong>already</strong></td>
-                <td>في الجملة المثبتة أو في السؤال للتعجب والسرعة</td>
-                <td><em>Has he finished the exam <strong>already</strong>? Clever!</em></td>
-                <td class="ar-text">للتأكيد على حدوث الفعل بالفعل أو التعجب في السؤال المبكر.</td>
-              </tr>
-              <tr>
-                <td><strong>yet</strong></td>
-                <td>في نهاية الجملة المنفية أو السؤال المتوقع حدوثه</td>
-                <td><em>Have you arrived home <strong>yet</strong>?</em></td>
-                <td class="ar-text">تأتي في نهاية النفي والسؤال عن شيء منتظر حدوثه.</td>
+                <td>In affirmative sentences or in questions expressing surprise at early completion.</td>
+                <td><em>"Has he finished the exam <strong>already</strong>? Very clever!"</em></td>
+                <td class="ar-font">للتأكيد على إنجاز الفعل بالفعل، أو التعجب من سرعة الإنجاز في السؤال.</td>
               </tr>
               <tr>
                 <td><strong>ever / never</strong></td>
-                <td>مع التفضيل أو التجارب: <code>never ... such a/an + adj + n</code></td>
-                <td><em>This is the best film I have <strong>ever</strong> seen.</em></td>
-                <td class="ar-text">never للتجربة الحياتية العامة، و ever في السؤال والتفضيل.</td>
+                <td>Superlative equivalence formula: <code>the most ... ever = never ... such a</code></td>
+                <td><em>"This is the best film I have <strong>ever</strong> seen."</em></td>
+                <td class="ar-font">تأتي ever مع التفضيل والأسئلة، وتأتي never لنفي التجربة الحياتية العامة.</td>
               </tr>
               <tr>
-                <td><strong>so far / up till now</strong></td>
-                <td>مع الكميات والأعداد المنجزة حتى اللحظة</td>
-                <td><em>So far, I have passed two exams.</em></td>
-                <td class="ar-text">بمعنى (حتى الآن) وتأتي مع ما تم إنجازه من أرقام ومراحل.</td>
+                <td><strong>so far</strong></td>
+                <td>Affirmative sentences quantifying results or actions completed up to now.</td>
+                <td><em>"Ayman has drunk five coffees <strong>so far</strong>."</em></td>
+                <td class="ar-font">بمعنى (حتى اللحظة الحالية) وتأتي مع تراكم الكميات والأعداد المنجزة.</td>
               </tr>
               <tr>
                 <td><strong>since</strong></td>
-                <td>توقيت محدد، مرحلة عمرية، أو <code>since + ماضي بسيط</code></td>
-                <td><em>Omar has worked here <strong>since</strong> he graduated.</em></td>
-                <td class="ar-text">تحدد بداية توقيت الحدث أو يتبعها جملة ماضي بسيط.</td>
+                <td>Punctual start point, life event noun, or <code>since + past simple clause</code>.</td>
+                <td><em>"Omar has worked here <strong>since</strong> he graduated."</em></td>
+                <td class="ar-font">تحدد نقطة انطلاق الحدث، أو يتبعها جملة في الماضي البسيط.</td>
               </tr>
               <tr>
                 <td><strong>for</strong></td>
-                <td>المدة الزمنية الكاملة المستغرقة (for 3 days, for ages)</td>
-                <td><em>I have lived in Aswan <strong>for</strong> 17 years.</em></td>
-                <td class="ar-text">تحدد إجمالي المدة الزمنية المستغرقة.</td>
+                <td>Duration of the entire completed time block (e.g. for 17 years, for ages).</td>
+                <td><em>"I have played football <strong>for</strong> as long as I can remember."</em></td>
+                <td class="ar-font">تحدد إجمالي المدة الزمنية المستغرقة كاملة.</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </section>
 
-    <!-- ========================================== -->
-    <!-- TAB 2: RULES DEEP-DIVE                     -->
-    <!-- ========================================== -->
-    <section id="tab-deep-dive" class="tab-content">
-      <div class="card" style="margin-bottom: 2rem;">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fa-solid fa-book-bookmark" style="color: #60a5fa;"></i>
-            <span>Unit 1 All 13 Core Grammar Rules (الشرح التفصيلي خطوة بخطوة)</span>
-          </div>
-          <span class="badge badge-blue ar-text">منهج الثانوية والوحدة الأولى</span>
-        </div>
+      <!-- Cause & Effect Clause Rules -->
+      <div class="editorial-note">
+        <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink-amber); margin-bottom: 0.4rem;">
+          <i class="fa-solid fa-link"></i> Subordinating Conjunctions of Cause: because / as / since
+        </h4>
+        <p style="font-size: 0.95rem; margin-bottom: 0.8rem;">
+          The tense of the cause clause depends strictly on whether the result is situated in the <strong>present</strong> or the <strong>past</strong>:
+        </p>
 
-        <!-- Rule 1 & 2 -->
-        <div style="margin-bottom: 1.8rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--card-border);">
-          <h3 style="color: #38bdf8; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-            <span class="q-number">01</span> Formation & Passive Voice (المبني للمعلوم والمجهول)
-          </h3>
-          <p class="ar-text" style="margin-bottom: 0.8rem;">
-            <strong>المبني للمعلوم:</strong> يتكون المضارع التام من <code>have / has + P.P.</code><br>
-            <strong>المبني للمجهول:</strong> يتكون من <code>المفعول (Object) + have / has + been + P.P.</code>
-          </p>
-          <div class="grid-2">
-            <div class="example-box">
-              <div class="ex-en">Radwa <strong>has washed</strong> the dishes. (Active)</div>
-              <div class="ex-ar ar-text">رضوى غسلت الأطباق.</div>
-            </div>
-            <div class="example-box">
-              <div class="ex-en">The dishes <strong>have been washed</strong> (by Radwa). (Passive)</div>
-              <div class="ex-ar ar-text">الأطباق تم غسلها (بواسطة رضوى).</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Rule 3 & 4 & 5: Core Usages -->
-        <div style="margin-bottom: 1.8rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--card-border);">
-          <h3 style="color: #a855f7; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-            <span class="q-number" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">02</span> Core Usages (استخدامات المضارع التام البسيط)
-          </h3>
-          <div class="grid-3">
-            <div style="background: rgba(255, 255, 255, 0.02); padding: 1rem; border-radius: 12px; border: 1px solid var(--card-border);">
-              <h5 style="color: #38bdf8; margin-bottom: 0.4rem;">أحداث بدأت ولم تنته بعد</h5>
-              <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-                <em>"I have felt this pain since I arrived home."</em><br>
-                (I still feel this pain right now).
-              </p>
-            </div>
-            <div style="background: rgba(255, 255, 255, 0.02); padding: 1rem; border-radius: 12px; border: 1px solid var(--card-border);">
-              <h5 style="color: #34d399; margin-bottom: 0.4rem;">مواقف دون ذكر وقت حدوثها</h5>
-              <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-                <em>"I have attended three meetings."</em><br>
-                (خبرات سابقة غير محددة بزمن منتهٍ).
-              </p>
-            </div>
-            <div style="background: rgba(255, 255, 255, 0.02); padding: 1rem; border-radius: 12px; border: 1px solid var(--card-border);">
-              <h5 style="color: #fbbf24; margin-bottom: 0.4rem;">أحداث منتهية ولها أثر حاضر</h5>
-              <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-                <em>"I've eaten enough, so I don't want any more food."</em><br>
-                (السبب مضارع تام، والنتيجة مضارع بسيط).
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Rule 6: Ever & Never Equivalence Patterns -->
-        <div style="margin-bottom: 1.8rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--card-border);">
-          <h3 style="color: #ec4899; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-            <span class="q-number" style="background: rgba(236, 72, 153, 0.15); color: #f472b6;">03</span> Formula Equivalences (معادلات التفضيل والتجربة الأولى)
-          </h3>
-          <div class="ar-text" style="margin-bottom: 0.8rem; font-size: 0.95rem;">
-            هاتان المعادلتان من أكثر الصيغ تكراراً في امتحانات الثانوية العامة:
-          </div>
-          
-          <div class="formula-box" style="border-left-color: #ec4899;">
-            <div class="formula-label">صيغة التفضيل = صيغة النفي بـ never</div>
-            <div class="formula-code">This is the most [adj] + noun + I have EVER seen</div>
-            <div class="formula-code" style="color: #34d399; margin-top: 0.3rem;">= I have NEVER seen such a/an + [adj] + noun.</div>
-          </div>
-
-          <div class="formula-box" style="border-left-color: #f59e0b;">
-            <div class="formula-label">صيغة المرة الأولى = لم يحدث من قبل قط</div>
-            <div class="formula-code">This is the first time + Subj + have/has (ever) + P.P.</div>
-            <div class="formula-code" style="color: #34d399; margin-top: 0.3rem;">= Subj + have/has NEVER + P.P. ... before (now).</div>
-          </div>
-
-          <div class="example-box">
-            <div class="ex-en">"This is the most dangerous animal I have <strong>ever</strong> seen."</div>
-            <div class="ex-en" style="color: #38bdf8;">= "I have <strong>never</strong> seen <strong>such a</strong> dangerous animal."</div>
-            <div class="ex-ar ar-text">هذا أخطر حيوان رأيته في حياتي = لم أرَ قط حيواناً بمثل هذا الخطر من قبل.</div>
-          </div>
-        </div>
-
-        <!-- Rule 11 & 12: Since vs For Formulas -->
-        <div style="margin-bottom: 1.8rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--card-border);">
-          <h3 style="color: #10b981; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-            <span class="q-number" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">04</span> Since vs For Special Structures (حالات خاصة لـ since و for)
-          </h3>
-          
-          <div class="grid-2">
-            <div>
-              <h4 style="color: #38bdf8; margin-bottom: 0.6rem;">أشكال استخدام since الأربعة:</h4>
-              <ul style="font-size: 0.9rem; color: var(--text-muted); padding-left: 1.2rem; line-height: 1.8;">
-                <li><strong>1. توقيت محدد:</strong> <em>since yesterday / Sunday / 2016 / 5 o'clock.</em></li>
-                <li><strong>2. اسم يدل على مرحلة:</strong> <em>since her birth / childhood / graduation.</em></li>
-                <li><strong>3. جملة ماضي بسيط:</strong> <em>Omar has worked here since he graduated.</em></li>
-                <li><strong>4. قاعدة It's + مدة:</strong> <em>It's two months <strong>since</strong> we met.</em></li>
-              </ul>
-            </div>
-            <div>
-              <h4 style="color: #06b6d4; margin-bottom: 0.6rem;">استخدام for (المدة المستغرقة):</h4>
-              <ul style="font-size: 0.9rem; color: var(--text-muted); padding-left: 1.2rem; line-height: 1.8;">
-                <li><strong>المدة التي استغرقها الحدث:</strong> <em>for 17 years / two months / a week / a long time / ages.</em></li>
-                <li><strong>تعبير مميز:</strong> <em>I have played football <strong>for as long as I can remember</strong>.</em></li>
-                <li><strong>مع now:</strong> <em>It has been raining for three days now.</em></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Rule 9: Cause & Effect Connectors -->
-        <div>
-          <h3 style="color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-            <span class="q-number" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">05</span> Cause & Effect Connections (روابط السبب والنتيجة وعلاقتها بالأزمنة)
-          </h3>
-          <p class="ar-text" style="margin-bottom: 0.8rem;">
-            انتبه جيداً إلى زمن النتيجة ليحدد زمن السبب:
-          </p>
-
-          <div style="background: var(--code-bg); padding: 1.2rem; border-radius: 14px; text-align: center; margin-bottom: 1.2rem; border: 1px solid var(--card-border);">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-              <span class="badge badge-green" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Present / Future Result</span>
-              <i class="fa-solid fa-arrow-right"></i>
-              <span style="font-weight: 800; color: #fbbf24;">because / as / since</span>
-              <i class="fa-solid fa-arrow-right"></i>
-              <span class="badge badge-blue" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Present Perfect / Continuous</span>
-            </div>
-            <div style="margin-top: 1rem; font-size: 0.95rem; color: var(--text-main);">
+        <div class="grid-columns-2" style="margin-bottom: 0;">
+          <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--ink-emerald);">
+            <div style="font-weight: 700; color: var(--ink-emerald); margin-bottom: 0.3rem;">Present / Future Result</div>
+            <div style="font-size: 0.9rem;">
               <em>"He <strong>is sad</strong> because his father <strong>has been shouting</strong> at him."</em>
             </div>
+            <div class="ar-font" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.4rem;">
+              النتيجة في الحاضر (is) &larr; السبب مضارع تام مستمر (has been shouting).
+            </div>
           </div>
 
-          <div style="background: rgba(239, 68, 68, 0.06); padding: 1.2rem; border-radius: 14px; text-align: center; border: 1px solid rgba(239, 68, 68, 0.2);">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-              <span class="badge badge-rose" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Past Result (أثر ماضي)</span>
-              <i class="fa-solid fa-arrow-right"></i>
-              <span style="font-weight: 800; color: #fbbf24;">because / as / since</span>
-              <i class="fa-solid fa-arrow-right"></i>
-              <span class="badge badge-purple" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Past Perfect Continuous (had been + ing)</span>
-            </div>
-            <div style="margin-top: 1rem; font-size: 0.95rem; color: var(--text-main);">
+          <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--ink-crimson);">
+            <div style="font-weight: 700; color: var(--ink-crimson); margin-bottom: 0.3rem;">Past Result</div>
+            <div style="font-size: 0.9rem;">
               <em>"He <strong>was sad</strong> because his father <strong>had been shouting</strong> at him."</em>
             </div>
+            <div class="ar-font" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.4rem;">
+              النتيجة في الماضي (was) &larr; السبب ماضي تام مستمر (had been shouting).
+            </div>
           </div>
         </div>
-
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- TAB 3: COMPARISON & DUAL-VERB LAB          -->
-    <!-- ========================================== -->
-    <section id="tab-comparison" class="tab-content">
-      <!-- Side by Side Comparison Matrix -->
-      <div class="card" style="margin-bottom: 2rem;">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fa-solid fa-scale-balanced" style="color: #38bdf8;"></i>
-            <span>Present Perfect Simple vs Present Perfect Continuous</span>
-          </div>
-          <span class="badge badge-blue ar-text">مقارنة شاملة بين البسيط والمستمر</span>
+    <!-- ========================================================== -->
+    <!-- SECTION 2: COMPARISON & DUAL-VERBS LAB                     -->
+    <!-- ========================================================== -->
+    <section id="section-comparison" class="editorial-section">
+      <div class="section-head">
+        <div>
+          <h3 class="section-title">Comparative Ledger & Dual Verbs Lab</h3>
+          <span class="section-caption">Systematic side-by-side analysis and interactive predicate tester</span>
         </div>
-
-        <div class="matrix-container">
-          <table class="matrix-table">
-            <thead>
-              <tr>
-                <th style="width: 20%;">Feature (وجه المقارنة)</th>
-                <th style="width: 40%; color: #38bdf8;">Present Perfect Simple (البسيط)</th>
-                <th style="width: 40%; color: #ec4899;">Present Perfect Continuous (المستمر)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Primary Focus (التركيز الأساسي)</strong></td>
-                <td>
-                  <strong>Focus on the RESULT or COMPLETION:</strong><br>
-                  التركيز على اكتمال الفعل أو النتيجة المعرفية/الملموسة.<br>
-                  <em>"Omar has read a lot of books on farming. He is a real expert."</em>
-                </td>
-                <td>
-                  <strong>Focus on the ACTIVITY & DURATION:</strong><br>
-                  التركيز على استمرار النشاط نفسه وبذل الجهد طوال الوقت.<br>
-                  <em>"Sarah has been taking Arabic lessons since she arrived."</em>
-                </td>
-              </tr>
-              <tr>
-                <td><strong>With Numbers & Counts (الأعداد والكميات)</strong></td>
-                <td>
-                  <span style="color: #34d399; font-weight: 700;">✓ إلزامي:</span><br>
-                  يُستخدم دائماً عند ذكر عدد المرات أو كمية ما تم إنجازه.<br>
-                  <em>"I have written <strong>three</strong> reports."</em>
-                </td>
-                <td>
-                  <span style="color: #f87171; font-weight: 700;">✗ ممنوع تماماً:</span><br>
-                  لا يُستخدم مع ذكر عدد المرات أو كمية المفعول.<br>
-                  <em>(NOT: have been writing three reports)</em>
-                </td>
-              </tr>
-              <tr>
-                <td><strong>Momentary Verbs (الأفعال اللحظية)</strong></td>
-                <td>
-                  <span style="color: #34d399; font-weight: 700;">✓ يُستخدم:</span><br>
-                  أفعال الحدوث السريع (stop, arrive, break, lose, score).<br>
-                  <em>"He has <strong>broken</strong> his leg."</em>
-                </td>
-                <td>
-                  <span style="color: #f87171; font-weight: 700;">✗ ممنوع تماماً:</span><br>
-                  الأفعال اللحظية لا تستغرق فترة لتستمر فيها.<br>
-                  <em>(NOT: has been breaking his leg)</em>
-                </td>
-              </tr>
-              <tr>
-                <td><strong>Interchangeable Verbs (أفعال يجوز فيها الاثنان)</strong></td>
-                <td colspan="2" style="background: rgba(99, 102, 241, 0.05); text-align: center;">
-                  أفعال الإقامة والعمل والتعلم (<strong>live, work, study, wait</strong>) يجوز استخدام الزمنين معاً دون تغيير في المعنى:<br>
-                  <em>"I have <strong>lived</strong> here since 1999."</em> (✓) &nbsp;= &nbsp;
-                  <em>"I have <strong>been living</strong> here since 1999."</em> (✓)
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <span class="ar-font" style="font-size: 0.95rem; color: var(--text-muted);">معمل الأفعال ذات المعنيين والمقارنة الشاملة</span>
       </div>
 
-      <!-- Interactive Verb Classifier Lab -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fa-solid fa-flask" style="color: #a855f7;"></i>
-            <span>Interactive Dual-Meaning Verbs Lab (معمل الأفعال ذات المعنيين)</span>
-          </div>
-          <span class="badge badge-purple ar-text">أفعال يتغير معناها في الاستمرار</span>
-        </div>
-        
-        <p class="ar-text" style="color: var(--text-muted); margin-bottom: 1.2rem;">
-          بعض الأفعال تكون أفعال حالة (لا تأخذ -ing) إذا جاءت بمعنى معين، وتصبح أفعال حركة (تقبل -ing) إذا جاءت بمعنى آخر. اضغط على أي فعل لاكتشاف الفارق مع الأمثلة:
+      <!-- Comparative Matrix -->
+      <div class="ledger-wrapper">
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Grammatical Feature</th>
+              <th style="width: 37.5%; color: var(--ink-cobalt);">Present Perfect Simple (البسيط)</th>
+              <th style="width: 37.5%; color: var(--ink-violet);">Present Perfect Continuous (المستمر)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Primary Semantic Focus</strong></td>
+              <td>
+                <strong>Result & Completion:</strong><br>
+                Emphasizes the finished product, knowledge acquired, or resulting state.<br>
+                <em>"Omar has read many books on farming. He is a real expert."</em>
+              </td>
+              <td>
+                <strong>Activity & Effort:</strong><br>
+                Emphasizes the ongoing nature of the process or persistent activity over time.<br>
+                <em>"Sarah has been taking Arabic lessons since she arrived."</em>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Quantified Items & Counts</strong></td>
+              <td>
+                <span style="color: var(--ink-emerald); font-weight: 700;">Mandatory:</span><br>
+                Required whenever counting objects, letters, cups, or occurrences.<br>
+                <em>"I have written <strong>three</strong> reports."</em>
+              </td>
+              <td>
+                <span style="color: var(--ink-crimson); font-weight: 700;">Strictly Forbidden:</span><br>
+                Cannot take counts of completed objects.<br>
+                <em>(Never: have been writing three reports)</em>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Momentary Verbs</strong></td>
+              <td>
+                <span style="color: var(--ink-emerald); font-weight: 700;">Valid:</span><br>
+                Punctual, split-second actions.<br>
+                <em>"Omar has broken his leg."</em>
+              </td>
+              <td>
+                <span style="color: var(--ink-crimson); font-weight: 700;">Forbidden:</span><br>
+                Actions without duration cannot be prolonged.<br>
+                <em>(Never: has been breaking his leg)</em>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Prolonged Activities (live, work)</strong></td>
+              <td colspan="2" style="background: var(--bg-well); text-align: center;">
+                Verbs of long-term activity (<strong>work, live, study, teach</strong>) can be used in either the present perfect simple or continuous with "since" to convey essentially the same meaning:<br>
+                <em>"I have <strong>worked</strong> with this team since 2014."</em> = <em>"I have <strong>been working</strong> with this team since 2014."</em>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Interactive Verb Workbench -->
+      <div class="verb-workbench">
+        <h4 style="font-family: var(--font-serif); font-size: 1.35rem; margin-bottom: 0.3rem;">
+          <i class="fa-solid fa-microscope" style="color: var(--ink-cobalt);"></i> The Verb Tense Analyzer
+        </h4>
+        <p class="ar-font" style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+          اكتب أي فعل بالإنجليزية أو اضغط على الأزرار السريعة لمعرفة هل يقبل الاستمرار أم يقتصر على البسيط!
         </p>
 
-        <!-- Interactive Verb Checker Tool -->
-        <div class="verb-checker">
-          <h3 style="color: #38bdf8; margin-bottom: 0.3rem;">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Instant Verb Tense Analyzer
-          </h3>
-          <p class="ar-text" style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-            اكتب أي فعل بالإنجليزية أو اختر من المقترحات لمعرفة هل يقبل المضارع التام المستمر أم يقتصر على البسيط!
-          </p>
+        <div class="workbench-bar">
+          <input 
+            type="text" 
+            id="workbench-verb-input" 
+            class="workbench-input" 
+            placeholder="Type any verb (e.g. know, break, live, work, think, see, have)..."
+            onkeypress="if(event.key==='Enter') queryVerbWorkbench()"
+          >
+          <button type="button" class="btn-primary" onclick="queryVerbWorkbench()">Analyze Verb</button>
+        </div>
 
-          <div class="verb-input-row">
-            <input 
-              type="text" 
-              id="verb-tester-input" 
-              class="verb-input" 
-              placeholder="Type verb (e.g. know, break, live, work, think, see, arrive)..."
-              onkeypress="if(event.key==='Enter') testVerb()"
-            >
-            <button type="button" class="verb-test-btn" onclick="testVerb()">
-              <span>Analyze Verb</span>
+        <!-- Quick Suggestions -->
+        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+          <button type="button" class="filter-chip" onclick="setAndRunWorkbench('know')">know</button>
+          <button type="button" class="filter-chip" onclick="setAndRunWorkbench('break')">break</button>
+          <button type="button" class="filter-chip" onclick="setAndRunWorkbench('arrive')">arrive</button>
+          <button type="button" class="filter-chip" onclick="setAndRunWorkbench('work')">work</button>
+          <button type="button" class="filter-chip" onclick="setAndRunWorkbench('live')">live</button>
+          <button type="button" class="filter-chip" onclick="setAndRunWorkbench('think')">think</button>
+          <button type="button" class="filter-chip" onclick="setAndRunWorkbench('have')">have</button>
+          <button type="button" class="filter-chip" onclick="setAndRunWorkbench('contain')">contain</button>
+          <button type="button" class="filter-chip" onclick="setAndRunWorkbench('taste')">taste</button>
+        </div>
+
+        <!-- Result Box -->
+        <div id="workbench-result" class="workbench-result"></div>
+      </div>
+
+      <!-- 10 Dual-Meaning Verbs Matrix -->
+      <h4 style="font-family: var(--font-serif); font-size: 1.35rem; margin-bottom: 0.8rem;">
+        10 Dual-Meaning Verbs (أفعال يتغير معناها في الاستمرار)
+      </h4>
+      <div id="dual-verbs-matrix" class="dual-verbs-matrix">
+        <!-- Rendered by app.js -->
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- SECTION 3: BEEN TO VS GONE TO VS BEEN IN                   -->
+    <!-- ========================================================== -->
+    <section id="section-travel" class="editorial-section">
+      <div class="section-head">
+        <div>
+          <h3 class="section-title">The Location & Return Board</h3>
+          <span class="section-caption">Interactive visualization of "been to", "gone to", and "been in"</span>
+        </div>
+        <span class="ar-font" style="font-size: 0.95rem; color: var(--text-muted);">محاكي السفر البصري: ذهب وعاد vs ذهب ولم يعد</span>
+      </div>
+
+      <div class="travel-board">
+        <div class="travel-toggles">
+          <button type="button" class="travel-toggle-btn active" id="travel-btn-been-to" onclick="selectTravelMode('been-to')">
+            has been to (ذهب وعاد)
+          </button>
+          <button type="button" class="travel-toggle-btn" id="travel-btn-gone-to" onclick="selectTravelMode('gone-to')">
+            has gone to (ذهب ولم يعد)
+          </button>
+          <button type="button" class="travel-toggle-btn" id="travel-btn-been-in" onclick="selectTravelMode('been-in')">
+            has been in (مقيم في المكان)
+          </button>
+        </div>
+
+        <!-- Animated Travel Canvas -->
+        <div class="travel-canvas-display">
+          <div class="station-node">
+            <div class="station-icon">🏠</div>
+            <div class="station-name">Origin / Home</div>
+            <div class="station-status" id="travel-home-status">Currently Here</div>
+          </div>
+
+          <div id="traveler-token" class="traveler-token">🏠🚶‍♂️</div>
+
+          <div class="station-node">
+            <div class="station-icon">🗽</div>
+            <div class="station-name">New York / Paris</div>
+            <div class="station-status" id="travel-dest-status">Visited & Returned</div>
+          </div>
+        </div>
+
+        <div class="travel-explanation-panel">
+          <h4 id="travel-panel-title" style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink-cobalt); margin-bottom: 0.4rem;">
+            have / has been to + مكان
+          </h4>
+          <p id="travel-panel-en" style="font-size: 1rem; font-weight: 600; color: var(--text-headline); margin-bottom: 0.4rem;">
+            Lean has been to New York. (Denotes a completed journey from which the subject has returned, confirming she is no longer there).
+          </p>
+          <p id="travel-panel-ar" class="ar-font" style="font-size: 0.92rem; color: var(--text-muted);">
+            المعنى: زارت نيويورك وعادت بالفعل إلى موطنها، وهي موجودة هنا الآن وليست هناك.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- SECTION 4: SINCE VS FOR SPEED SORTER                       -->
+    <!-- ========================================================== -->
+    <section id="section-sorter" class="editorial-section">
+      <div class="section-head">
+        <div>
+          <h3 class="section-title">Since vs For Sorting Arena</h3>
+          <span class="section-caption">Rapid classification of 12 recurring examination time expressions</span>
+        </div>
+        <span class="ar-font" style="font-size: 0.95rem; color: var(--text-muted);">تحدي فرز التعابير الزمنية مع since و for</span>
+      </div>
+
+      <div class="sorter-arena">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-hairline); padding-bottom: 0.8rem;">
+          <div>
+            <div style="font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700;">Examination Time Challenge</div>
+            <div class="ar-font" style="font-size: 0.85rem; color: var(--text-muted);">اختر الخانة المناسبة لكل تعبير زمني</div>
+          </div>
+          <div style="display: flex; gap: 1.5rem;">
+            <div style="text-align: right;">
+              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Score</div>
+              <div id="sorter-score-tracker" style="font-family: var(--font-mono); font-size: 1.4rem; font-weight: 800; color: var(--ink-emerald);">0 / 12</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Streak</div>
+              <div id="sorter-streak-tracker" style="font-family: var(--font-mono); font-size: 1.4rem; font-weight: 800; color: var(--ink-amber);">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Word Display -->
+        <div class="sorter-word-stage">
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.4rem;">
+            Classify Expression:
+          </div>
+          <div id="sorter-active-word" class="sorter-word">yesterday</div>
+          <div id="sorter-active-hint" class="ar-font" style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.3rem;">نقطة زمنية محددة البداية</div>
+        </div>
+
+        <div class="sorter-columns">
+          <button type="button" class="sorter-drop-btn" onclick="submitSorterChoice('since')">
+            <div class="sorter-btn-title" style="color: var(--ink-cobalt);">SINCE</div>
+            <div class="ar-font" style="font-size: 0.88rem; color: var(--text-muted);">نقطة بداية محددة / اسم مرحلة / جملة ماضي</div>
+          </button>
+
+          <button type="button" class="sorter-drop-btn" onclick="submitSorterChoice('for')">
+            <div class="sorter-btn-title" style="color: var(--ink-emerald);">FOR</div>
+            <div class="ar-font" style="font-size: 0.88rem; color: var(--text-muted);">المدة الإجمالية المستغرقة كاملة</div>
+          </button>
+        </div>
+
+        <div style="text-align: center; margin-top: 1.4rem;">
+          <button type="button" class="filter-chip" onclick="resetSinceForSorter()" style="padding: 0.5rem 1.2rem;">
+            <i class="fa-solid fa-rotate-right"></i> Reset Sorter
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- SECTION 5: 17-ITEM MASTER EXAM STUDIO                      -->
+    <!-- ========================================================== -->
+    <section id="section-exam" class="editorial-section">
+      <div class="section-head">
+        <div>
+          <h3 class="section-title">The Examination Studio</h3>
+          <span class="section-caption">17 authentic questions paired with official grammatical rationales</span>
+        </div>
+        <span class="ar-font" style="font-size: 0.95rem; color: var(--text-muted);">الامتحان التفاعلي الشامل مع الملاحظات النموذجية لكل سؤال</span>
+      </div>
+
+      <!-- Exam Toolbar -->
+      <div class="exam-toolbar">
+        <div class="exam-filters">
+          <button type="button" class="filter-chip active" data-filter="all">All (17)</button>
+          <button type="button" class="filter-chip" data-filter="Stative Verbs">Stative Verbs</button>
+          <button type="button" class="filter-chip" data-filter="Keywords">Keywords</button>
+          <button type="button" class="filter-chip" data-filter="Been vs Gone">Been vs Gone</button>
+          <button type="button" class="filter-chip" data-filter="Simple vs Continuous">Simple vs Cont.</button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);">
+            Progress: <span id="exam-answered-count" style="font-weight: 700; color: var(--text-headline);">0 / 17</span>
+          </div>
+
+          <div class="exam-view-toggle">
+            <button type="button" id="btn-mode-interactive" class="toggle-mode-btn active" onclick="toggleExamMode('interactive')">
+              Test Mode
+            </button>
+            <button type="button" id="btn-mode-study" class="toggle-mode-btn" onclick="toggleExamMode('study')">
+              Reveal All Notes
             </button>
           </div>
-
-          <!-- Quick Suggestion Pills -->
-          <div style="display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem;">
-            <button class="filter-btn" onclick="setAndTestVerb('know')">know</button>
-            <button class="filter-btn" onclick="setAndTestVerb('break')">break</button>
-            <button class="filter-btn" onclick="setAndTestVerb('work')">work</button>
-            <button class="filter-btn" onclick="setAndTestVerb('live')">live</button>
-            <button class="filter-btn" onclick="setAndTestVerb('think')">think</button>
-            <button class="filter-btn" onclick="setAndTestVerb('have')">have</button>
-            <button class="filter-btn" onclick="setAndTestVerb('see')">see</button>
-            <button class="filter-btn" onclick="setAndTestVerb('taste')">taste</button>
-            <button class="filter-btn" onclick="setAndTestVerb('arrive')">arrive</button>
-            <button class="filter-btn" onclick="setAndTestVerb('contain')">contain</button>
-          </div>
-
-          <!-- Result Card -->
-          <div id="verb-result-box" class="verb-result-box"></div>
         </div>
 
-        <!-- Verb Cards Grid -->
-        <div id="dual-verbs-container" class="dual-verb-grid">
-          <!-- Populated by app.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- TAB 4: BEEN TO VS GONE TO VS BEEN IN       -->
-    <!-- ========================================== -->
-    <section id="tab-been-gone" class="tab-content">
-      <div class="travel-sim">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fa-solid fa-location-dot" style="color: #ec4899;"></i>
-            <span>Interactive Simulator: Been to vs Gone to vs Been in</span>
-          </div>
-          <span class="badge badge-rose ar-text">المقارنة الثلاثية الشهيرة</span>
-        </div>
-
-        <!-- Buttons to trigger states -->
-        <div class="sim-nav">
-          <button class="sim-btn active" id="btn-been-to" onclick="setTravelMode('been-to')">
-            <i class="fa-solid fa-rotate-left"></i>
-            <span>has been to (ذهب وعاد)</span>
-          </button>
-          <button class="sim-btn" id="btn-gone-to" onclick="setTravelMode('gone-to')">
-            <i class="fa-solid fa-arrow-right-long"></i>
-            <span>has gone to (ذهب ولم يعد)</span>
-          </button>
-          <button class="sim-btn" id="btn-been-in" onclick="setTravelMode('been-in')">
-            <i class="fa-solid fa-house-chimney"></i>
-            <span>has been in (مقيم في المكان)</span>
-          </button>
-        </div>
-
-        <!-- Interactive Visual Animation Arena -->
-        <div class="map-visual">
-          <div class="map-city">
-            <div class="city-icon">🏠</div>
-            <div class="city-name">Home (موطنه / هنا)</div>
-            <div id="home-status" style="font-size: 0.8rem; color: #34d399; font-weight: 700;">Currently Here</div>
-          </div>
-
-          <div id="traveler" class="traveler-avatar">🚶‍♂️</div>
-
-          <div class="map-city">
-            <div class="city-icon">🗽</div>
-            <div class="city-name">London / New York</div>
-            <div id="dest-status" style="font-size: 0.8rem; color: var(--text-muted);">Destination</div>
-          </div>
-        </div>
-
-        <!-- Dynamic Rule Card -->
-        <div id="sim-explanation" class="sim-info-box">
-          <h3 id="sim-title" style="color: #38bdf8; margin-bottom: 0.4rem;">have / has been to + مكان</h3>
-          <p id="sim-en" style="font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.4rem;">
-            "He has been to the supermarket. You can see the bags on the table."
-          </p>
-          <p id="sim-ar" class="ar-text" style="font-size: 0.95rem; color: var(--text-muted);">
-            المعنى: ذهب إلى المكان وعاد منه وهو موجود الآن هنا! والدليل: أكياس المشتريات على الطاولة.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- TAB 5: SINCE VS FOR MINI-GAME              -->
-    <!-- ========================================== -->
-    <section id="tab-sort-game" class="tab-content">
-      <div class="game-container">
-        <div class="game-score-row">
-          <div>
-            <span style="font-weight: 800; font-size: 1.2rem; color: #38bdf8;">Since vs For Speed Challenge</span>
-            <div class="ar-text" style="font-size: 0.85rem; color: var(--text-muted);">اختر الخانة الصحيحة للتعبير الزمني الظاهر أمامك</div>
-          </div>
-          <div style="display: flex; gap: 1.5rem; align-items: center;">
-            <div style="text-align: right;">
-              <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Score</span>
-              <div id="game-score" style="font-size: 1.6rem; font-weight: 800; color: #34d399;">0 / 12</div>
-            </div>
-            <div style="text-align: right;">
-              <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Streak</span>
-              <div id="game-streak" style="font-size: 1.6rem; font-weight: 800; color: #fbbf24;">🔥 0</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Word Card -->
-        <div class="game-card-display">
-          <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.4rem;">
-            Where does this time phrase belong?
-          </div>
-          <div id="game-word" class="game-item-text">yesterday</div>
-          <div id="game-hint" class="ar-text" style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.3rem;">نقطة زمنية محددة البداية</div>
-        </div>
-
-        <!-- Buckets / Buttons -->
-        <div class="game-buckets">
-          <button class="bucket-btn bucket-since" onclick="handleGameChoice('since')">
-            <div class="bucket-title">SINCE</div>
-            <div class="bucket-subtitle ar-text">توقيت محدد / نقطة بداية الحدث</div>
-          </button>
-          <button class="bucket-btn bucket-for" onclick="handleGameChoice('for')">
-            <div class="bucket-title">FOR</div>
-            <div class="bucket-subtitle ar-text">إجمالي المدة الزمنية المستغرقة</div>
-          </button>
-        </div>
-
-        <div style="text-align: center; margin-top: 1.2rem;">
-          <button class="icon-btn" onclick="resetGame()" style="width: auto; padding: 0.5rem 1rem; margin: 0 auto; display: inline-flex; gap: 0.5rem;">
-            <i class="fa-solid fa-rotate-right"></i>
-            <span>Restart Game</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- TAB 6: MASTER 17-QUESTION EXAM             -->
-    <!-- ========================================== -->
-    <section id="tab-quiz" class="tab-content">
-      <!-- Quiz Header Card with Stats & Category Filters -->
-      <div class="quiz-header-card">
-        <div>
-          <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.2rem;">
-            Unit 1 Master Exam (17 Questions)
-          </h2>
-          <div class="ar-text" style="font-size: 0.9rem; color: var(--text-muted);">
-            جميع أسئلة المذكرة والامتحانات مع تصحيح فوري وشرح تفصيلي باللغتين العربية والإنجليزية
-          </div>
-        </div>
-
-        <!-- Filter buttons -->
-        <div class="quiz-filter-group">
-          <button class="filter-btn active" data-filter="all">All (17)</button>
-          <button class="filter-btn" data-filter="Stative Verbs">Stative Verbs</button>
-          <button class="filter-btn" data-filter="Keywords">Keywords</button>
-          <button class="filter-btn" data-filter="Been vs Gone">Been vs Gone</button>
-          <button class="filter-btn" data-filter="Simple vs Continuous">Simple vs Cont.</button>
-        </div>
-
-        <!-- Progress bar -->
-        <div class="quiz-progress-bar-container">
-          <div id="quiz-progress-fill" class="quiz-progress-fill"></div>
+        <div class="exam-progress-bar">
+          <div id="exam-progress-track" class="exam-progress-track"></div>
         </div>
       </div>
 
-      <!-- Quiz Final Score Modal / Banner (shown when finished) -->
-      <div id="score-summary-modal" class="score-summary-modal">
-        <div class="score-circle">
-          <div id="final-score-val" class="score-val">0%</div>
-        </div>
-        <h2 id="final-score-title" style="margin-bottom: 0.4rem; font-weight: 800;">Exam Finished!</h2>
-        <p id="final-score-msg" class="ar-text" style="color: var(--text-muted); max-width: 600px; margin: 0 auto 1.5rem auto; font-size: 1.05rem;">
-          أحسنت! راجع الشروحات أسفل كل سؤال لتثبيت القواعد.
+      <!-- Score Summary Ledger (shown upon completion) -->
+      <div id="score-ledger-card" class="score-ledger-card">
+        <div id="score-figure-val" class="score-figure">0%</div>
+        <h3 style="font-size: 1.6rem; margin-bottom: 0.4rem;">Examination Complete</h3>
+        <p id="score-msg-lead" style="color: var(--text-muted); max-width: 620px; margin: 0 auto 1.5rem auto; font-size: 1.05rem;">
+          Review the authoritative grammar notes attached to each item below.
         </p>
-        <button class="icon-btn" onclick="resetQuiz()" style="width: auto; padding: 0.75rem 1.6rem; margin: 0 auto; display: inline-flex; gap: 0.6rem; background: var(--primary); color: white;">
-          <i class="fa-solid fa-arrow-rotate-left"></i>
-          <span>Retake Full Exam</span>
+        <button type="button" class="btn-primary" onclick="resetExam()">
+          <i class="fa-solid fa-rotate-left"></i> Retake Examination
         </button>
       </div>
 
-      <!-- Questions Container -->
-      <div id="questions-list">
+      <!-- Question Cards List -->
+      <div id="exam-questions-container">
         <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- SECTION 6: DEDICATED OFFICIAL NOTES DOSSIER                -->
+    <!-- ========================================================== -->
+    <section id="section-dossier" class="editorial-section">
+      <div class="section-head">
+        <div>
+          <h3 class="section-title">Official Examination Notes Dossier</h3>
+          <span class="section-caption">Scholarly reference key for all 17 examination items</span>
+        </div>
+        <span class="ar-font" style="font-size: 0.95rem; color: var(--text-muted);">الملف المرجعي المعتمد لجميع إجابات وملاحظات الأسئلة الـ 17</span>
+      </div>
+
+      <div style="background: var(--ink-amber-soft); border-left: 4px solid var(--ink-amber); padding: 1.2rem; border-radius: var(--radius-sm); margin-bottom: 2rem;">
+        <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink-amber); margin-bottom: 0.3rem;">
+          <i class="fa-solid fa-feather-pointed"></i> Master Annotation Reference
+        </h4>
+        <p style="font-size: 0.92rem; color: var(--text-body);">
+          This dossier records the authoritative answer, rule category, and full grammatical rationale for each of the 17 examination questions. You may review them sequentially or print them as a reference sheet.
+        </p>
+      </div>
+
+      <div id="official-dossier-container">
+        <!-- Populated by app.js with exact user notes -->
       </div>
     </section>
 

@@ -1,231 +1,162 @@
-// Grammar Master Unit 1 - Main Interactive Engine
-// Vanilla JS with zero external dependencies for maximum speed and offline support
+// Grammar-Pro Masterclass Engine
+// Scholarly, Interactive, Offline-ready, Zero Dependencies
 
-// State Management
-let currentTab = 'summary';
+let currentSection = 'summary';
 let soundEnabled = true;
-let gameState = {
-  currentIndex: 0,
+let examMode = 'interactive'; // 'interactive' or 'study-key'
+
+// State for the Exam
+let examState = {
+  answers: {}, // qId -> selectedOptionIndex
+  filter: 'all'
+};
+
+// State for Sorter Game
+let sorterState = {
+  index: 0,
   score: 0,
   streak: 0,
   items: [...TIME_EXPRESSIONS]
 };
 
-let quizState = {
-  answers: {}, // questionId -> chosenOptionIndex
-  filter: 'all',
-  totalQuestions: QUIZ_QUESTIONS.length
-};
-
-// Web Audio API Synthesizer for instant rich audio feedback
-class SoundFX {
+// Web Audio API Chimes
+class AcademicSound {
   constructor() {
     this.ctx = null;
   }
 
-  init() {
+  ensureContext() {
     if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      this.ctx = new AudioCtx();
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AudioContextClass();
     }
   }
 
   playCorrect() {
     if (!soundEnabled) return;
     try {
-      this.init();
+      this.ensureContext();
       if (!this.ctx) return;
-      const now = this.ctx.currentTime;
-      
+      const t = this.ctx.currentTime;
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       osc.type = 'sine';
-      
-      // Happy two-tone chord
-      osc.frequency.setValueAtTime(523.25, now); // C5
-      osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.12); // G5
-      
-      gain.gain.setValueAtTime(0.18, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
-      
+      osc.frequency.setValueAtTime(523.25, t); // C5
+      osc.frequency.exponentialRampToValueAtTime(783.99, t + 0.12); // G5
+      gain.gain.setValueAtTime(0.12, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
       osc.connect(gain);
       gain.connect(this.ctx.destination);
-      
-      osc.start(now);
-      osc.stop(now + 0.35);
+      osc.start(t);
+      osc.stop(t + 0.3);
     } catch (e) {
-      console.warn("Audio unavailable", e);
+      console.warn("Sound error:", e);
     }
   }
 
   playWrong() {
     if (!soundEnabled) return;
     try {
-      this.init();
+      this.ensureContext();
       if (!this.ctx) return;
-      const now = this.ctx.currentTime;
-      
+      const t = this.ctx.currentTime;
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
-      osc.type = 'sawtooth';
-      
-      osc.frequency.setValueAtTime(220, now); // A3
-      osc.frequency.linearRampToValueAtTime(146.83, now + 0.25); // D3
-      
-      gain.gain.setValueAtTime(0.15, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-      
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(220, t); // A3
+      osc.frequency.linearRampToValueAtTime(164.81, t + 0.22); // E3
+      gain.gain.setValueAtTime(0.12, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
       osc.connect(gain);
       gain.connect(this.ctx.destination);
-      
-      osc.start(now);
-      osc.stop(now + 0.3);
+      osc.start(t);
+      osc.stop(t + 0.25);
     } catch (e) {
-      console.warn("Audio unavailable", e);
+      console.warn("Sound error:", e);
     }
   }
 
   playFanfare() {
     if (!soundEnabled) return;
     try {
-      this.init();
+      this.ensureContext();
       if (!this.ctx) return;
-      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-      notes.forEach((freq, i) => {
-        const now = this.ctx.currentTime + (i * 0.12);
+      const notes = [523.25, 659.25, 783.99, 1046.5];
+      notes.forEach((freq, idx) => {
+        const t = this.ctx.currentTime + (idx * 0.1);
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.frequency.setValueAtTime(freq, now);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.frequency.setValueAtTime(freq, t);
+        gain.gain.setValueAtTime(0.1, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.3);
+        osc.start(t);
+        osc.stop(t + 0.25);
       });
     } catch (e) {
-      console.warn("Fanfare error", e);
+      console.warn("Fanfare error:", e);
     }
   }
 }
 
-const sfx = new SoundFX();
+const audioFX = new AcademicSound();
 
-// Canvas Confetti System
-function triggerConfetti() {
-  const canvas = document.getElementById('confetti-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const particles = [];
-  const colors = ['#4f46e5', '#06b6d4', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6'];
-
-  for (let i = 0; i < 90; i++) {
-    particles.push({
-      x: canvas.width / 2,
-      y: canvas.height / 2,
-      vx: (Math.random() - 0.5) * 16,
-      vy: (Math.random() - 0.8) * 16,
-      size: Math.random() * 8 + 4,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      alpha: 1,
-      rotation: Math.random() * 360,
-      vRot: (Math.random() - 0.5) * 10
-    });
-  }
-
-  let animationFrame;
-  function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let alive = false;
-
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.35; // gravity
-      p.vx *= 0.98;
-      p.rotation += p.vRot;
-      p.alpha -= 0.012;
-
-      if (p.alpha > 0) {
-        alive = true;
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate((p.rotation * Math.PI) / 180);
-        ctx.globalAlpha = Math.max(0, p.alpha);
-        ctx.fillStyle = p.color;
-        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
-        ctx.restore();
-      }
-    });
-
-    if (alive) {
-      animationFrame = requestAnimationFrame(update);
-    } else {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      cancelAnimationFrame(animationFrame);
-    }
-  }
-
-  update();
-}
-
-// ==========================================
-// Initialization & Navigation
-// ==========================================
+// ==========================================================
+// Initialization
+// ==========================================================
 document.addEventListener('DOMContentLoaded', () => {
   setupNavigation();
   setupThemeToggle();
   setupSoundToggle();
-  setupSearch();
-  renderDualVerbsLab();
-  initSortingGame();
-  renderQuiz();
+  setupSearchFilter();
+  renderDualVerbsMatrix();
+  initSinceForSorter();
+  renderExamStudio();
+  renderOfficialDossierKey();
 });
 
-// Tab Switcher
+// Primary Tab Navigation
 function setupNavigation() {
-  const tabs = document.querySelectorAll('.tab-btn');
+  const tabs = document.querySelectorAll('.nav-tab');
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      const target = tab.getAttribute('data-tab');
-      switchTab(target);
+      const target = tab.getAttribute('data-section');
+      switchSection(target);
     });
   });
 }
 
-function switchTab(tabId) {
-  currentTab = tabId;
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+function switchSection(sectionId) {
+  currentSection = sectionId;
+  document.querySelectorAll('.nav-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-section') === sectionId);
   });
-  document.querySelectorAll('.tab-content').forEach(content => {
-    content.classList.toggle('active', content.id === `tab-${tabId}`);
+  document.querySelectorAll('.editorial-section').forEach(sec => {
+    sec.classList.toggle('active', sec.id === `section-${sectionId}`);
   });
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Light / Dark Theme Toggle
 function setupThemeToggle() {
-  const btn = document.getElementById('theme-toggle');
+  const btn = document.getElementById('theme-toggle-btn');
   const html = document.documentElement;
-  const savedTheme = localStorage.getItem('gm_theme') || 'dark';
-  html.setAttribute('data-theme', savedTheme);
-  updateThemeIcon(savedTheme);
+  const saved = localStorage.getItem('grammar_pro_theme') || 'dark';
+  html.setAttribute('data-theme', saved);
+  updateThemeIcon(saved);
 
   btn.addEventListener('click', () => {
     const current = html.getAttribute('data-theme');
     const next = current === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
-    localStorage.setItem('gm_theme', next);
+    localStorage.setItem('grammar_pro_theme', next);
     updateThemeIcon(next);
   });
 }
 
 function updateThemeIcon(theme) {
-  const icon = document.querySelector('#theme-toggle i');
+  const icon = document.querySelector('#theme-toggle-btn i');
   if (icon) {
     icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
   }
@@ -233,236 +164,53 @@ function updateThemeIcon(theme) {
 
 // Sound Toggle
 function setupSoundToggle() {
-  const btn = document.getElementById('sound-toggle');
+  const btn = document.getElementById('sound-toggle-btn');
   btn.addEventListener('click', () => {
     soundEnabled = !soundEnabled;
     const icon = btn.querySelector('i');
     icon.className = soundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
-    btn.style.color = soundEnabled ? 'var(--text-main)' : 'var(--danger)';
+    btn.style.color = soundEnabled ? '' : 'var(--ink-crimson)';
   });
 }
 
-// Global Quick Search
-function setupSearch() {
-  const input = document.getElementById('global-search');
+// Live Keyword Search
+function setupSearchFilter() {
+  const input = document.getElementById('master-search-input');
+  if (!input) return;
+
   input.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase().trim();
-    if (!term) {
-      document.querySelectorAll('.card, .question-card, .example-box').forEach(el => {
-        el.style.display = '';
-      });
-      return;
-    }
-
-    // Filter question cards and grammar cards
-    document.querySelectorAll('.card, .question-card').forEach(card => {
+    const searchableCards = document.querySelectorAll('.rule-card, .question-item-card, .dual-card, .dossier-card');
+    
+    searchableCards.forEach(card => {
+      if (!term) {
+        card.style.display = '';
+        return;
+      }
       const text = card.textContent.toLowerCase();
       card.style.display = text.includes(term) ? '' : 'none';
     });
   });
 }
 
-// ==========================================
-// Verb Analyzer Tool
-// ==========================================
-const VERB_KNOWLEDGE_BASE = {
-  know: {
-    type: "Stative Verb (فعل حالة وإدراك)",
-    canContinuous: false,
-    reason_en: "'know' is a stative verb describing mental state. It is NEVER used in continuous forms.",
-    reason_ar: "فعل 'know' من أفعال الحالة والإدراك، لا يقبل الاستمرار إطلاقاً. نستخدم المضارع التام البسيط فقط.",
-    simpleEx: "We have known each other for 10 years. (✓)",
-    contEx: "We have been knowing each other. (✗ WRONG)"
-  },
-  break: {
-    type: "Momentary Verb (فعل لحظي)",
-    canContinuous: false,
-    reason_en: "'break' happens in a split second. Momentary verbs cannot describe ongoing duration unless repeated.",
-    reason_ar: "فعل 'break' (يكسر) فعل لحظي لا يستغرق مدة زمنية ليحدث، لذا يمتنع المضارع التام المستمر.",
-    simpleEx: "Omar has broken his leg. (✓)",
-    contEx: "Omar has been breaking his leg. (✗ WRONG)"
-  },
-  arrive: {
-    type: "Momentary Verb (فعل لحظي)",
-    canContinuous: false,
-    reason_en: "'arrive' happens at an exact point in time. It cannot take continuous aspect for duration.",
-    reason_ar: "فعل 'arrive' (يصل) لحظي، يحدث في ثانية ولا يقبل الاستمرار للتعبير عن مدة.",
-    simpleEx: "My father has just arrived home. (✓)",
-    contEx: "He has been arriving home. (✗ WRONG)"
-  },
-  lose: {
-    type: "Momentary Verb (فعل لحظي)",
-    canContinuous: false,
-    reason_en: "'lose' is instantaneous. You either have lost something or not.",
-    reason_ar: "فعل 'lose' (يفقد / يضيع) لحظي لا يقبل الاستمرار.",
-    simpleEx: "I have lost my passport. (✓)",
-    contEx: "I have been losing my passport. (✗ WRONG)"
-  },
-  work: {
-    type: "Duration Verb (فعل استغراق وعمل)",
-    canContinuous: true,
-    reason_en: "'work' expresses duration. Both Present Perfect Simple and Continuous are completely correct with 'since' / 'for'.",
-    reason_ar: "فعل 'work' (يعمل) يجوز فيه المضارع التام البسيط أو المستمر دون اختلاف في المعنى مع (since / for).",
-    simpleEx: "I have worked with this team since 2014. (✓)",
-    contEx: "I have been working with this team since 2014. (✓ Also correct!)"
-  },
-  live: {
-    type: "Duration Verb (فعل معيشة وإقامة)",
-    canContinuous: true,
-    reason_en: "'live' expresses prolonged residence. Both Simple and Continuous are valid with 'since' / 'for'.",
-    reason_ar: "فعل 'live' (يعيش) يجوز فيه كِلا الزمنين للتعبير عن الإقامة المستمرة حتى الآن.",
-    simpleEx: "She has lived in Aswan for 17 years. (✓)",
-    contEx: "She has been living in Aswan for 17 years. (✓ Also correct!)"
-  },
-  study: {
-    type: "Action / Duration Verb",
-    canContinuous: true,
-    reason_en: "'study' can be used in both. Continuous emphasizes the ongoing activity and routine.",
-    reason_ar: "فعل 'study' (يذاكر / يدرس) يقبل التام المستمر للتركيز على استمرار المذاكرة طوال الوقت.",
-    simpleEx: "Nada has studied Arabic since morning. (✓)",
-    contEx: "Nada has been studying Arabic since 5 o'clock. (✓)"
-  },
-  contain: {
-    type: "Stative Verb (فعل حالة وسعة)",
-    canContinuous: false,
-    reason_en: "'contain' is a stative verb of capacity/possession. It cannot take '-ing'.",
-    reason_ar: "فعل 'contain' (يحتوي على) من أفعال الحالة الدائمة، لا يأتي في الأزمنة المستمرة مطلقاً.",
-    simpleEx: "The tank has contained 50 liters of fuel. (✓)",
-    contEx: "The tank has been containing 50 liters. (✗ WRONG)"
-  },
-  think: {
-    type: "Dual-Meaning Verb (ذو معنيين)",
-    canContinuous: "depends",
-    reason_en: "Stative (No -ing): when it means 'believe/have an opinion'. Action (Accepts -ing): when it means 'mentally ponder/consider'.",
-    reason_ar: "يعتقد (رأي) = حالة بدون ing | يفكر في (نشاط ذهني مستمر) = حركة يقبل ing.",
-    simpleEx: "I have thought he was right. (Opinion)",
-    contEx: "I have been thinking about your offer all day. (Mental process)"
-  },
-  have: {
-    type: "Dual-Meaning Verb (ذو معنيين)",
-    canContinuous: "depends",
-    reason_en: "Stative (No -ing): when it means 'possess/own'. Action (Accepts -ing): when it means 'eat, drink, take, spend'.",
-    reason_ar: "يمتلك = حالة بدون ing | يتناول وجبة أو يقضي وقتاً = حركة يقبل ing.",
-    simpleEx: "I have had this phone for 3 years. (Ownership)",
-    contEx: "He has been having lunch for 20 minutes. (Eating)"
-  },
-  see: {
-    type: "Dual-Meaning Verb (ذو معنيين)",
-    canContinuous: "depends",
-    reason_en: "Stative (No -ing): when it means 'perceive with eyes / understand'. Action (Accepts -ing): when it means 'meet / date / consult'.",
-    reason_ar: "يرى / يفهم = حالة بدون ing | يقابل / يستشير طبيباً = حركة يقبل ing.",
-    simpleEx: "I have seen that movie. (Perception)",
-    contEx: "She has been seeing a specialist recently. (Meeting/Consulting)"
-  },
-  taste: {
-    type: "Dual-Meaning Verb (ذو معنيين)",
-    canContinuous: "depends",
-    reason_en: "Stative (No -ing): when it means 'has a certain flavor'. Action (Accepts -ing): when it means 'the physical act of sampling food'.",
-    reason_ar: "ذو مذاق معين = حالة بدون ing | يتذوق الطعام بلسانه = حركة يقبل ing.",
-    simpleEx: "The soup has tasted delicious. (Flavor quality)",
-    contEx: "The chef has been tasting the soup. (Physical tasting)"
-  }
-};
-
-function setAndTestVerb(verb) {
-  const input = document.getElementById('verb-tester-input');
-  if (input) input.value = verb;
-  testVerb();
-}
-
-function testVerb() {
-  const input = document.getElementById('verb-tester-input');
-  const resultBox = document.getElementById('verb-result-box');
-  if (!input || !resultBox) return;
-
-  const verb = input.value.trim().toLowerCase();
-  if (!verb) return;
-
-  const data = VERB_KNOWLEDGE_BASE[verb];
-
-  resultBox.style.display = 'block';
-
-  if (data) {
-    let statusBadge = '';
-    let bgColor = '';
-    let borderColor = '';
-
-    if (data.canContinuous === true) {
-      statusBadge = '<span class="badge badge-green">✓ Accepts Continuous (يقبل المستمر)</span>';
-      bgColor = 'rgba(16, 185, 129, 0.08)';
-      borderColor = '#10b981';
-      sfx.playCorrect();
-    } else if (data.canContinuous === false) {
-      statusBadge = '<span class="badge badge-rose">✗ Simple Only (البسيط فقط - ممنوع المستمر)</span>';
-      bgColor = 'rgba(239, 68, 68, 0.08)';
-      borderColor = '#ef4444';
-      sfx.playWrong();
-    } else {
-      statusBadge = '<span class="badge badge-purple">⚡ Dual Meaning (يتغير بحسب المعنى)</span>';
-      bgColor = 'rgba(168, 85, 247, 0.08)';
-      borderColor = '#a855f7';
-      sfx.playCorrect();
-    }
-
-    resultBox.style.background = bgColor;
-    resultBox.style.border = `2px solid ${borderColor}`;
-
-    resultBox.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; flex-wrap:wrap; gap:0.5rem;">
-        <span style="font-size:1.3rem; font-weight:800; font-family:monospace; color:var(--text-main);">${verb.toUpperCase()}</span>
-        <div>${statusBadge} <span class="badge badge-blue">${data.type}</span></div>
-      </div>
-      <div style="font-size:0.92rem; color:var(--text-main); margin-bottom:0.4rem;">${data.reason_en}</div>
-      <div class="ar-text" style="font-size:0.95rem; color:var(--text-muted); margin-bottom:0.8rem;">${data.reason_ar}</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; font-size:0.85rem; text-align:left;">
-        <div style="background:rgba(255,255,255,0.04); padding:0.6rem; border-radius:8px; border-left:3px solid #38bdf8;">
-          <strong>Simple:</strong> <em>${data.simpleEx}</em>
-        </div>
-        <div style="background:rgba(255,255,255,0.04); padding:0.6rem; border-radius:8px; border-left:3px solid ${data.canContinuous === false ? '#ef4444' : '#10b981'};">
-          <strong>Continuous:</strong> <em>${data.contEx}</em>
-        </div>
-      </div>
-    `;
-  } else {
-    // Generic fallback analysis
-    resultBox.style.background = 'rgba(56, 189, 248, 0.08)';
-    resultBox.style.border = '2px solid #38bdf8';
-    resultBox.innerHTML = `
-      <div style="font-size:1.1rem; font-weight:800; color:#38bdf8; margin-bottom:0.4rem;">
-        Verb: "${verb}"
-      </div>
-      <p style="font-size:0.92rem; margin-bottom:0.4rem;">
-        If <strong>"${verb}"</strong> is an action verb describing an activity with duration (like <em>play, cook, read, run, write</em>), it naturally takes <strong>Present Perfect Continuous</strong> (<code>have/has been ${verb}ing</code>).
-      </p>
-      <p class="ar-text" style="font-size:0.92rem; color:var(--text-muted);">
-        إذا كان الفعل يدل على حركة أو نشاط يستغرق وقتاً، فهو يقبل المضارع التام المستمر للتعبير عن الاستمرار وبذل الجهد طوال الفترة، ويستخدم في التام البسيط فقط إذا ذكرت عدد مرات الحدوث أو كمية المفعول.
-      </p>
-    `;
-    sfx.playCorrect();
-  }
-}
-
-// ==========================================
-// Dual-Meaning Verbs Lab (Stative vs Action)
-// ==========================================
-function renderDualVerbsLab() {
-  const container = document.getElementById('dual-verbs-container');
+// ==========================================================
+// Dual Verbs Lab (Stative vs Action)
+// ==========================================================
+function renderDualVerbsMatrix() {
+  const container = document.getElementById('dual-verbs-matrix');
   if (!container) return;
 
-  container.innerHTML = DUAL_VERBS_DATA.map((item, idx) => `
-    <div class="dual-verb-card" id="verb-card-${idx}">
-      <div class="dual-verb-header">
-        <span class="dual-verb-name">${item.verb}</span>
-        <span class="badge badge-purple">Dual Sense</span>
-      </div>
+  container.innerHTML = DUAL_VERBS_DATA.map(item => `
+    <div class="dual-card">
+      <div class="dual-card-title">${item.verb.toUpperCase()}</div>
 
-      <!-- Stative Meaning Box -->
-      <div class="dual-sense dual-stative">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
-          <strong style="color: #ef4444;"><i class="fa-solid fa-lock"></i> Stative (حالة):</strong>
-          <span class="badge badge-rose" style="font-size:0.65rem;">No -ing</span>
+      <!-- Stative Dimension -->
+      <div class="dual-dimension dim-stative">
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+          <strong style="color:var(--ink-crimson); font-size:0.85rem;"><i class="fa-solid fa-lock"></i> STATIVE SENSE</strong>
+          <span style="font-size:0.75rem; font-weight:700; color:var(--ink-crimson);">No -ing</span>
         </div>
-        <div class="ar-text" style="font-weight:700; color:var(--text-main); margin-bottom:0.2rem;">
+        <div class="ar-font" style="font-weight:700; font-size:0.9rem; margin-bottom:0.2rem;">
           ${item.stative.meaning}
         </div>
         <div style="font-size:0.85rem; color:var(--text-muted); font-style:italic;">
@@ -470,13 +218,13 @@ function renderDualVerbsLab() {
         </div>
       </div>
 
-      <!-- Action Meaning Box -->
-      <div class="dual-sense dual-action">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
-          <strong style="color: #10b981;"><i class="fa-solid fa-bolt"></i> Action (حركة):</strong>
-          <span class="badge badge-green" style="font-size:0.65rem;">Accepts -ing</span>
+      <!-- Action Dimension -->
+      <div class="dual-dimension dim-action">
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+          <strong style="color:var(--ink-emerald); font-size:0.85rem;"><i class="fa-solid fa-bolt"></i> ACTION SENSE</strong>
+          <span style="font-size:0.75rem; font-weight:700; color:var(--ink-emerald);">Continuous OK</span>
         </div>
-        <div class="ar-text" style="font-weight:700; color:var(--text-main); margin-bottom:0.2rem;">
+        <div class="ar-font" style="font-weight:700; font-size:0.9rem; margin-bottom:0.2rem;">
           ${item.action.meaning}
         </div>
         <div style="font-size:0.85rem; color:var(--text-muted); font-style:italic;">
@@ -487,300 +235,512 @@ function renderDualVerbsLab() {
   `).join('');
 }
 
-// ==========================================
-// Been to vs Gone to vs Been in Visualizer
-// ==========================================
-const TRAVEL_DATA = {
-  'been-to': {
-    title: 'have / has been to + مكان (ذهب وعاد)',
-    en: 'He has been to the supermarket. You can see the bags on the table.',
-    ar: 'المعنى: ذهب إلى المكان وعاد منه وهو موجود هنا الآن! الدليل: أكياس المشتريات موجودة أمامه.',
-    leftPos: '25%',
-    icon: '🏠🚶‍♂️',
-    homeText: 'Currently Here (موجود هنا)',
-    destText: 'Visited & Returned (زارها وعاد)'
+// ==========================================================
+// Interactive Verb Workbench
+// ==========================================================
+const VERB_DICTIONARY = {
+  know: {
+    status: 'stative',
+    title: 'Stative Verb (فعل حالة وإدراك)',
+    canCont: false,
+    en: '"Know" is a stative verb describing a mental state; it cannot be used in continuous forms.',
+    ar: 'فعل حالة وإدراك يصف حالة ذهنية دائمة، يمتنع استخدامه في الأزمنة المستمرة تماماً.',
+    simple: 'We have known each other for ten years.',
+    cont: 'We have been knowing (Grammatically Incorrect)'
   },
-  'gone-to': {
-    title: 'have / has gone to + مكان (ذهب ولم يعد حتى الآن)',
-    en: 'You can’t meet the manager because he has gone to Paris.',
-    ar: 'المعنى: ذهب إلى المكان ولم يرجع حتى الآن (لا يزال في باريس أو في الطريق إليها). لا يمكن مقابلته هنا.',
-    leftPos: '75%',
-    icon: '🗼🚶‍♂️',
-    homeText: 'Not Here (ليس هنا)',
-    destText: 'Currently There (موجود هناك الآن)'
+  break: {
+    status: 'momentary',
+    title: 'Momentary Verb (فعل لحظي خاطف)',
+    canCont: false,
+    en: '"Break" is an instantaneous action that cannot have a prolonged continuous duration.',
+    ar: 'فعل لحظي يحدث في ثانية خاطفة ولا يستغرق فترة زمنية ممتدة، فيمتنع التام المستمر.',
+    simple: 'Omar has broken his leg.',
+    cont: 'Omar has been breaking his leg (Incorrect)'
   },
-  'been-in': {
-    title: 'have / has been in + مكان (لا يزال مقيماً في المكان)',
-    en: 'I have been in Cairo since last Friday.',
-    ar: 'المعنى: لا يزال مقيماً وموجوداً في هذا المكان منذ فترة زمنية محددة.',
-    leftPos: '75%',
-    icon: '🏨🧳',
-    homeText: 'Away',
-    destText: 'Living / Staying There (يقيم هناك)'
+  arrive: {
+    status: 'momentary',
+    title: 'Momentary Verb (فعل وصول لحظي)',
+    canCont: false,
+    en: '"Arrive" describes a punctual event that occurs at a specific point in time.',
+    ar: 'فعل وصول لحظي يقع في نقطة زمنية محددة ولا يستمر كفترة.',
+    simple: 'He has just arrived home.',
+    cont: 'He has been arriving home (Incorrect)'
+  },
+  work: {
+    status: 'flexible',
+    title: 'Prolonged Activity (أفعال العمل والمعيشة)',
+    canCont: true,
+    en: 'Verbs representing long-term activities like "work" and "live" can be used in either the present perfect simple or continuous with "since/for" with essentially the same meaning.',
+    ar: 'أفعال المعيشة والعمل تقبل كلا الزمنين مع since/for للتعبير عن نشاط طويل الأمد دون فارق جوهري.',
+    simple: 'I have worked with this team since 2014.',
+    cont: 'I have been working with this team since 2014.'
+  },
+  live: {
+    status: 'flexible',
+    title: 'Prolonged Activity (إقامة ومعيشة)',
+    canCont: true,
+    en: 'Both simple and continuous are valid for expressing extended residence with "since" or "for".',
+    ar: 'يجوز استخدام المضارع التام البسيط أو التام المستمر للتعبير عن الإقامة الممتدة.',
+    simple: 'She has lived here since 1999.',
+    cont: 'She has been living here since 1999.'
+  },
+  contain: {
+    status: 'stative',
+    title: 'Stative Verb (سعة وملكية)',
+    canCont: false,
+    en: '"Contain" describes an ongoing physical capacity/state and cannot take the continuous aspect.',
+    ar: 'فعل حالة يعبر عن السعة أو المكونات، لا يأتي في صيغة الاستمرار.',
+    simple: 'The tank has contained 50 liters of fuel.',
+    cont: 'The tank has been containing 50 liters (Incorrect)'
+  },
+  taste: {
+    status: 'dual',
+    title: 'Dual-Meaning Verb (حالة أو حركة بحسب المعنى)',
+    canCont: 'dual',
+    en: 'Stative: when describing flavor quality (No -ing). Action: when describing the physical sampling of food.',
+    ar: 'إذا قصد به أن الطعام ذو مذاق طيب (حالة بدون ing)، وإذا قصد به أن الطاهي يتذوق الأكل باللسان (حركة يقبل ing).',
+    simple: 'The soup has tasted delicious.',
+    cont: 'The chef has been tasting the soup.'
+  },
+  think: {
+    status: 'dual',
+    title: 'Dual-Meaning Verb (رأي أو تفكير)',
+    canCont: 'dual',
+    en: 'Stative: when it means "believe/have an opinion" (No -ing). Action: when it means "ponder/consider mentally".',
+    ar: 'يعتقد (رأي قاطع) = حالة بدون ing | يفكر في (نشاط ذهني مستمر) = حركة يقبل ing.',
+    simple: 'I have thought about what you said.',
+    cont: 'I have been thinking about your offer all day.'
+  },
+  have: {
+    status: 'dual',
+    title: 'Dual-Meaning Verb (ملكية أو تناول)',
+    canCont: 'dual',
+    en: 'Stative: possess/own (No -ing). Action: eat/drink/spend time (Continuous).',
+    ar: 'يمتلك = حالة بدون ing | يتناول وجبة أو يقضي وقتاً = حركة يقبل ing.',
+    simple: 'I have had this car for five years.',
+    cont: 'He has been having lunch for thirty minutes.'
   }
 };
 
-function setTravelMode(mode) {
-  // Update Buttons
-  document.querySelectorAll('.sim-btn').forEach(btn => btn.classList.remove('active'));
-  const activeBtn = document.getElementById(`btn-${mode}`);
-  if (activeBtn) activeBtn.classList.add('active');
+function queryVerbWorkbench() {
+  const input = document.getElementById('workbench-verb-input');
+  const resultBox = document.getElementById('workbench-result');
+  if (!input || !resultBox) return;
 
-  const data = TRAVEL_DATA[mode];
-  if (!data) return;
+  const rawVerb = input.value.trim().toLowerCase();
+  if (!rawVerb) return;
 
-  // Move traveler avatar
-  const avatar = document.getElementById('traveler');
-  if (avatar) {
-    avatar.style.left = data.leftPos;
-    avatar.innerHTML = data.icon;
-  }
+  const match = VERB_DICTIONARY[rawVerb];
+  resultBox.style.display = 'block';
 
-  // Update Status text
-  const homeStatus = document.getElementById('home-status');
-  const destStatus = document.getElementById('dest-status');
-  if (homeStatus) homeStatus.textContent = data.homeText;
-  if (destStatus) destStatus.textContent = data.destText;
+  if (match) {
+    let colorBorder = 'var(--ink-cobalt)';
+    let badgeClass = 'var(--ink-cobalt)';
+    let badgeLabel = 'Continuous OK';
 
-  // Update Explanation Text
-  const title = document.getElementById('sim-title');
-  const en = document.getElementById('sim-en');
-  const ar = document.getElementById('sim-ar');
-  if (title) title.textContent = data.title;
-  if (en) en.textContent = data.en;
-  if (ar) ar.textContent = data.ar;
-
-  sfx.playCorrect();
-}
-
-// ==========================================
-// Since vs For Sorting Mini-Game
-// ==========================================
-function initSortingGame() {
-  gameState.currentIndex = 0;
-  gameState.score = 0;
-  gameState.streak = 0;
-  // Shuffle items
-  gameState.items.sort(() => Math.random() - 0.5);
-  updateGameDisplay();
-}
-
-function updateGameDisplay() {
-  const currentItem = gameState.items[gameState.currentIndex];
-  const wordEl = document.getElementById('game-word');
-  const hintEl = document.getElementById('game-hint');
-  const scoreEl = document.getElementById('game-score');
-  const streakEl = document.getElementById('game-streak');
-
-  if (!currentItem) {
-    // Game completed!
-    if (wordEl) wordEl.textContent = '🎉 Awesome Job! All Done!';
-    if (hintEl) hintEl.textContent = `Final Score: ${gameState.score} / ${gameState.items.length}`;
-    triggerConfetti();
-    sfx.playFanfare();
-    return;
-  }
-
-  if (wordEl) wordEl.textContent = currentItem.text;
-  if (hintEl) hintEl.textContent = currentItem.hint;
-  if (scoreEl) scoreEl.textContent = `${gameState.score} / ${gameState.items.length}`;
-  if (streakEl) streakEl.textContent = `🔥 ${gameState.streak}`;
-}
-
-function handleGameChoice(choice) {
-  const currentItem = gameState.items[gameState.currentIndex];
-  if (!currentItem) return;
-
-  const wordEl = document.getElementById('game-word');
-
-  if (choice === currentItem.type) {
-    // Correct!
-    gameState.score++;
-    gameState.streak++;
-    sfx.playCorrect();
-    if (wordEl) {
-      wordEl.style.color = '#34d399';
-      setTimeout(() => { wordEl.style.color = '#38bdf8'; }, 300);
+    if (match.canCont === false) {
+      colorBorder = 'var(--ink-crimson)';
+      badgeClass = 'var(--ink-crimson)';
+      badgeLabel = 'Simple Only (No -ing)';
+      audioFX.playWrong();
+    } else if (match.canCont === true) {
+      colorBorder = 'var(--ink-emerald)';
+      badgeClass = 'var(--ink-emerald)';
+      badgeLabel = 'Simple & Continuous Both Valid';
+      audioFX.playCorrect();
+    } else {
+      colorBorder = 'var(--ink-amber)';
+      badgeClass = 'var(--ink-amber)';
+      badgeLabel = 'Dual Meaning (Depends on context)';
+      audioFX.playCorrect();
     }
-  } else {
-    // Wrong!
-    gameState.streak = 0;
-    sfx.playWrong();
-    if (wordEl) {
-      wordEl.style.color = '#ef4444';
-      setTimeout(() => { wordEl.style.color = '#38bdf8'; }, 300);
-    }
-  }
 
-  gameState.currentIndex++;
-  setTimeout(updateGameDisplay, 320);
-}
+    resultBox.style.border = `2px solid ${colorBorder}`;
+    resultBox.style.background = 'var(--bg-elevated)';
 
-function resetGame() {
-  initSortingGame();
-}
-
-// ==========================================
-// Master 17-Question Interactive Exam Engine
-// ==========================================
-function renderQuiz() {
-  const container = document.getElementById('questions-list');
-  if (!container) return;
-
-  // Setup category filters
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      quizState.filter = btn.getAttribute('data-filter');
-      filterQuestions();
-    });
-  });
-
-  // Render question cards
-  container.innerHTML = QUIZ_QUESTIONS.map((q, index) => {
-    const letters = ['A', 'B', 'C', 'D'];
-    return `
-      <div class="question-card" id="q-card-${q.id}" data-category="${q.category}">
-        <div class="q-top-row">
-          <span class="q-number">Question ${q.id} of 17</span>
-          <span class="q-category">${q.category}</span>
+    resultBox.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+        <span style="font-family:var(--font-mono); font-size:1.35rem; font-weight:800; color:var(--text-headline);">${rawVerb.toUpperCase()}</span>
+        <span style="background:${badgeClass}; color:white; font-size:0.75rem; font-weight:800; padding:0.25rem 0.6rem; border-radius:4px;">${badgeLabel}</span>
+      </div>
+      <div style="font-size:0.95rem; font-weight:600; color:var(--text-headline); margin-bottom:0.35rem;">${match.en}</div>
+      <div class="ar-font" style="font-size:0.95rem; color:var(--text-muted); margin-bottom:1rem;">${match.ar}</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; font-size:0.88rem;">
+        <div style="background:var(--bg-well); padding:0.75rem; border-radius:4px; border-left:3px solid var(--ink-cobalt);">
+          <strong>Simple:</strong> <em>${match.simple}</em>
         </div>
-
-        <div class="q-text">${escapeHtml(q.question)}</div>
-
-        <div class="options-list">
-          ${q.options.map((opt, optIndex) => `
-            <button 
-              type="button"
-              class="option-btn" 
-              id="q-${q.id}-opt-${optIndex}" 
-              onclick="handleAnswer(${q.id}, ${optIndex})"
-            >
-              <span class="option-letter">${letters[optIndex]}</span>
-              <span class="option-text">${escapeHtml(opt)}</span>
-            </button>
-          `).join('')}
-        </div>
-
-        <!-- Explanation Drawer -->
-        <div class="q-explanation" id="q-${q.id}-exp">
-          <div class="exp-title">
-            <i class="fa-solid fa-lightbulb" style="color: #fbbf24;"></i>
-            <span>Grammar Rule & Analysis: ${q.ruleTag}</span>
-          </div>
-          <div class="exp-text-en">${q.explanation_en}</div>
-          <div class="exp-text-ar ar-text">${q.explanation_ar}</div>
+        <div style="background:var(--bg-well); padding:0.75rem; border-radius:4px; border-left:3px solid ${match.canCont === false ? 'var(--ink-crimson)' : 'var(--ink-emerald)'};">
+          <strong>Continuous:</strong> <em>${match.cont}</em>
         </div>
       </div>
     `;
-  }).join('');
-
-  updateQuizProgress();
+  } else {
+    resultBox.style.border = '1px solid var(--border-hairline)';
+    resultBox.style.background = 'var(--bg-elevated)';
+    resultBox.innerHTML = `
+      <div style="font-family:var(--font-mono); font-size:1.15rem; font-weight:700; color:var(--ink-cobalt); margin-bottom:0.4rem;">VERB: "${rawVerb}"</div>
+      <p style="font-size:0.92rem; margin-bottom:0.4rem;">
+        For dynamic action verbs with continuous duration (e.g., <em>read, study, run, paint</em>), <strong>Present Perfect Continuous</strong> is fully accepted unless a specific count or frequency of completed units is stated.
+      </p>
+      <p class="ar-font" style="font-size:0.92rem; color:var(--text-muted);">
+        إذا كان الفعل يدل على حركة ونشاط مستمر، فهو يقبل التام المستمر طالما لم نذكر عدد المرات أو كمية المفعول المنجز.
+      </p>
+    `;
+    audioFX.playCorrect();
+  }
 }
 
-function filterQuestions() {
-  const cards = document.querySelectorAll('.question-card');
+function setAndRunWorkbench(verb) {
+  const input = document.getElementById('workbench-verb-input');
+  if (input) input.value = verb;
+  queryVerbWorkbench();
+}
+
+// ==========================================================
+// Been to vs Gone to Travel Simulator
+// ==========================================================
+const TRAVEL_MODES = {
+  'been-to': {
+    title: 'have / has been to + مكان',
+    subtitle: 'ذهب إلى مكان وعاد منه (Back Now)',
+    en: 'Lean has been to New York. (She completed the journey and is no longer there; she has returned).',
+    ar: 'المعنى: زارت نيويورك وعادت بالفعل إلى موطنها، وهي موجودة هنا الآن وليست هناك.',
+    left: '25%',
+    icon: '🏠🚶‍♂️',
+    homeStatus: 'Currently Here (موجود هنا)',
+    destStatus: 'Visited & Returned (زارها وعاد)'
+  },
+  'gone-to': {
+    title: 'have / has gone to + مكان',
+    subtitle: 'ذهب إلى مكان ولم يعد حتى الآن (Still There)',
+    en: 'You cannot meet the manager because he has gone to Paris. (He is still in Paris or en route).',
+    ar: 'المعنى: ذهب إلى باريس ولم يرجع حتى هذه اللحظة، لذلك لا يمكن مقابلته هنا.',
+    left: '75%',
+    icon: '🗼🚶‍♂️',
+    homeStatus: 'Away (غائب)',
+    destStatus: 'Currently There (موجود هناك الآن)'
+  },
+  'been-in': {
+    title: 'have / has been in + مكان',
+    subtitle: 'مقيم في المكان منذ فترة (Residing / Staying)',
+    en: 'I have been in Cairo since last Friday. (Still residing or staying in Cairo).',
+    ar: 'المعنى: لا يزال مقيماً وموجوداً في هذا المكان منذ فترة زمنية محددة.',
+    left: '75%',
+    icon: '🏨🧳',
+    homeStatus: 'Away',
+    destStatus: 'Living / Staying There (يقيم هناك)'
+  }
+};
+
+function selectTravelMode(mode) {
+  document.querySelectorAll('.travel-toggle-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById(`travel-btn-${mode}`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const config = TRAVEL_MODES[mode];
+  if (!config) return;
+
+  const token = document.getElementById('traveler-token');
+  if (token) {
+    token.style.left = config.left;
+    token.innerHTML = config.icon;
+  }
+
+  const homeStatus = document.getElementById('travel-home-status');
+  const destStatus = document.getElementById('travel-dest-status');
+  if (homeStatus) homeStatus.textContent = config.homeStatus;
+  if (destStatus) destStatus.textContent = config.destStatus;
+
+  const title = document.getElementById('travel-panel-title');
+  const en = document.getElementById('travel-panel-en');
+  const ar = document.getElementById('travel-panel-ar');
+
+  if (title) title.innerHTML = `${config.title} &mdash; <span style="font-size:0.85rem; color:var(--text-muted);">${config.subtitle}</span>`;
+  if (en) en.textContent = config.en;
+  if (ar) ar.textContent = config.ar;
+
+  audioFX.playCorrect();
+}
+
+// ==========================================================
+// Since vs For Sorter
+// ==========================================================
+function initSinceForSorter() {
+  sorterState.index = 0;
+  sorterState.score = 0;
+  sorterState.streak = 0;
+  sorterState.items.sort(() => Math.random() - 0.5);
+  renderSorterCard();
+}
+
+function renderSorterCard() {
+  const current = sorterState.items[sorterState.index];
+  const wordEl = document.getElementById('sorter-active-word');
+  const hintEl = document.getElementById('sorter-active-hint');
+  const scoreEl = document.getElementById('sorter-score-tracker');
+  const streakEl = document.getElementById('sorter-streak-tracker');
+
+  if (!current) {
+    if (wordEl) wordEl.textContent = 'Challenge Completed!';
+    if (hintEl) hintEl.textContent = `Final Score: ${sorterState.score} / ${sorterState.items.length}`;
+    audioFX.playFanfare();
+    return;
+  }
+
+  if (wordEl) wordEl.textContent = current.text;
+  if (hintEl) hintEl.textContent = current.hint;
+  if (scoreEl) scoreEl.textContent = `${sorterState.score} / ${sorterState.items.length}`;
+  if (streakEl) streakEl.textContent = `${sorterState.streak}`;
+}
+
+function submitSorterChoice(choice) {
+  const current = sorterState.items[sorterState.index];
+  if (!current) return;
+
+  const wordEl = document.getElementById('sorter-active-word');
+
+  if (choice === current.type) {
+    sorterState.score++;
+    sorterState.streak++;
+    audioFX.playCorrect();
+    if (wordEl) {
+      wordEl.style.color = 'var(--ink-emerald)';
+      setTimeout(() => { wordEl.style.color = ''; }, 250);
+    }
+  } else {
+    sorterState.streak = 0;
+    audioFX.playWrong();
+    if (wordEl) {
+      wordEl.style.color = 'var(--ink-crimson)';
+      setTimeout(() => { wordEl.style.color = ''; }, 250);
+    }
+  }
+
+  sorterState.index++;
+  setTimeout(renderSorterCard, 280);
+}
+
+function resetSinceForSorter() {
+  initSinceForSorter();
+}
+
+// ==========================================================
+// Exam Studio: 17 Questions with Exact User Notes
+// ==========================================================
+function renderExamStudio() {
+  const container = document.getElementById('exam-questions-container');
+  if (!container) return;
+
+  // Filter chips listeners
+  const chips = document.querySelectorAll('.filter-chip');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      examState.filter = chip.getAttribute('data-filter');
+      applyExamFilter();
+    });
+  });
+
+  const letters = ['a', 'b', 'c', 'd'];
+
+  container.innerHTML = QUIZ_QUESTIONS.map(q => `
+    <div class="question-item-card" id="question-card-${q.id}" data-category="${q.category}">
+      <div class="question-meta-header">
+        <span class="q-index-badge">Item ${q.id.toString().padStart(2, '0')} / 17</span>
+        <span class="q-category-tag">${q.category}</span>
+      </div>
+
+      <div class="question-prompt-text">${escapeHtml(q.question)}</div>
+
+      <div class="options-stack">
+        ${q.options.map((opt, optIdx) => `
+          <button 
+            type="button" 
+            class="option-chip-btn" 
+            id="q-${q.id}-opt-${optIdx}"
+            onclick="handleExamOptionClick(${q.id}, ${optIdx})"
+          >
+            <span class="option-letter-badge">(${letters[optIdx]})</span>
+            <span class="option-text-span">${escapeHtml(opt)}</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <!-- The Official Note Key Callout (Revealed upon answer) -->
+      <div class="official-note-box" id="official-note-${q.id}">
+        <div class="note-header-line">
+          <div class="note-title-badge">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Official Answer & Grammatical Rationale &bull; (${q.correctLetter}) ${escapeHtml(q.correctText)}</span>
+          </div>
+          <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">${q.ruleTag}</span>
+        </div>
+        
+        <!-- Exact User Note verbatim -->
+        <div class="note-body-text">
+          <strong>Note:</strong> ${escapeHtml(q.officialNote)}
+        </div>
+
+        <div class="note-arabic-synthesis ar-font">
+          <strong>الشرح بالعربية:</strong> ${escapeHtml(q.explanation_ar)}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  updateExamProgress();
+}
+
+function handleExamOptionClick(questionId, selectedIdx) {
+  // If already answered, ignore further clicks
+  if (examState.answers[questionId] !== undefined) return;
+
+  const q = QUIZ_QUESTIONS.find(item => item.id === questionId);
+  if (!q) return;
+
+  examState.answers[questionId] = selectedIdx;
+
+  const selectedBtn = document.getElementById(`q-${questionId}-opt-${selectedIdx}`);
+  const correctBtn = document.getElementById(`q-${questionId}-opt-${q.answer}`);
+  const noteBox = document.getElementById(`official-note-${questionId}`);
+
+  // Disable all buttons in this question
+  for (let i = 0; i < q.options.length; i++) {
+    const btn = document.getElementById(`q-${questionId}-opt-${i}`);
+    if (btn) btn.disabled = true;
+  }
+
+  if (selectedIdx === q.answer) {
+    if (selectedBtn) selectedBtn.classList.add('correct');
+    audioFX.playCorrect();
+  } else {
+    if (selectedBtn) selectedBtn.classList.add('wrong');
+    if (correctBtn) correctBtn.classList.add('correct');
+    audioFX.playWrong();
+  }
+
+  // Reveal the official note box
+  if (noteBox) noteBox.classList.add('revealed');
+
+  updateExamProgress();
+  checkExamCompletion();
+}
+
+function updateExamProgress() {
+  const answered = Object.keys(examState.answers).length;
+  const percent = Math.round((answered / QUIZ_QUESTIONS.length) * 100);
+  const track = document.getElementById('exam-progress-track');
+  const countDisplay = document.getElementById('exam-answered-count');
+  if (track) track.style.width = `${percent}%`;
+  if (countDisplay) countDisplay.textContent = `${answered} / 17`;
+}
+
+function applyExamFilter() {
+  const cards = document.querySelectorAll('.question-item-card');
   cards.forEach(card => {
     const cat = card.getAttribute('data-category');
-    if (quizState.filter === 'all' || cat === quizState.filter) {
-      card.style.display = 'block';
+    if (examState.filter === 'all' || cat === examState.filter) {
+      card.style.display = '';
     } else {
       card.style.display = 'none';
     }
   });
 }
 
-function handleAnswer(questionId, chosenIndex) {
-  // If already answered, do nothing
-  if (quizState.answers[questionId] !== undefined) return;
-
-  const question = QUIZ_QUESTIONS.find(q => q.id === questionId);
-  if (!question) return;
-
-  quizState.answers[questionId] = chosenIndex;
-
-  const chosenBtn = document.getElementById(`q-${questionId}-opt-${chosenIndex}`);
-  const correctBtn = document.getElementById(`q-${questionId}-opt-${question.answer}`);
-  const expBox = document.getElementById(`q-${questionId}-exp`);
-
-  // Disable all options for this question
-  for (let i = 0; i < question.options.length; i++) {
-    const btn = document.getElementById(`q-${questionId}-opt-${i}`);
-    if (btn) btn.disabled = true;
-  }
-
-  if (chosenIndex === question.answer) {
-    // Correct!
-    if (chosenBtn) chosenBtn.classList.add('correct');
-    sfx.playCorrect();
-  } else {
-    // Wrong!
-    if (chosenBtn) chosenBtn.classList.add('wrong');
-    if (correctBtn) correctBtn.classList.add('correct');
-    sfx.playWrong();
-  }
-
-  // Reveal explanation
-  if (expBox) expBox.classList.add('show');
-
-  updateQuizProgress();
-  checkQuizCompletion();
-}
-
-function updateQuizProgress() {
-  const answeredCount = Object.keys(quizState.answers).length;
-  const percentage = Math.round((answeredCount / quizState.totalQuestions) * 100);
-  const fill = document.getElementById('quiz-progress-fill');
-  if (fill) fill.style.width = `${percentage}%`;
-}
-
-function checkQuizCompletion() {
-  const answeredCount = Object.keys(quizState.answers).length;
-  if (answeredCount === quizState.totalQuestions) {
-    // Calculate total score
+function checkExamCompletion() {
+  const answered = Object.keys(examState.answers).length;
+  if (answered === QUIZ_QUESTIONS.length) {
     let correctCount = 0;
     QUIZ_QUESTIONS.forEach(q => {
-      if (quizState.answers[q.id] === q.answer) {
-        correctCount++;
-      }
+      if (examState.answers[q.id] === q.answer) correctCount++;
     });
 
-    const finalPercent = Math.round((correctCount / quizState.totalQuestions) * 100);
-    const modal = document.getElementById('score-summary-modal');
-    const scoreVal = document.getElementById('final-score-val');
-    const title = document.getElementById('final-score-title');
-    const msg = document.getElementById('final-score-msg');
+    const percent = Math.round((correctCount / QUIZ_QUESTIONS.length) * 100);
+    const ledger = document.getElementById('score-ledger-card');
+    const figure = document.getElementById('score-figure-val');
+    const msg = document.getElementById('score-msg-lead');
 
-    if (scoreVal) scoreVal.textContent = `${finalPercent}%`;
-    if (title) {
-      if (finalPercent >= 85) title.textContent = '🌟 Outstanding Mastery!';
-      else if (finalPercent >= 60) title.textContent = '👍 Good Effort!';
-      else title.textContent = 'Keep Practicing & Reviewing!';
-    }
+    if (figure) figure.textContent = `${percent}%`;
     if (msg) {
-      msg.textContent = `You scored ${correctCount} out of ${quizState.totalQuestions} questions correctly (${finalPercent}%). راجع القواعد والشروحات أسفل الأسئلة لتثبيت كافة الأفكار.`;
+      msg.textContent = `Completed: ${correctCount} of 17 correct answers. Examine the official notes below to reinforce your grasp on every distinction.`;
     }
+    if (ledger) ledger.style.display = 'block';
 
-    if (modal) modal.style.display = 'block';
-
-    if (finalPercent >= 70) {
-      triggerConfetti();
-      sfx.playFanfare();
+    if (percent >= 75) {
+      audioFX.playFanfare();
     }
   }
 }
 
-function resetQuiz() {
-  quizState.answers = {};
-  document.getElementById('score-summary-modal').style.display = 'none';
-  renderQuiz();
-  window.scrollTo({ top: document.getElementById('tab-quiz').offsetTop - 60, behavior: 'smooth' });
+function resetExam() {
+  examState.answers = {};
+  const ledger = document.getElementById('score-ledger-card');
+  if (ledger) ledger.style.display = 'none';
+  renderExamStudio();
 }
 
-// Utility: HTML Escaping
+function toggleExamMode(mode) {
+  examMode = mode;
+  document.getElementById('btn-mode-interactive').classList.toggle('active', mode === 'interactive');
+  document.getElementById('btn-mode-study').classList.toggle('active', mode === 'study');
+
+  if (mode === 'study') {
+    // Reveal all correct options and notes
+    QUIZ_QUESTIONS.forEach(q => {
+      const correctBtn = document.getElementById(`q-${q.id}-opt-${q.answer}`);
+      const noteBox = document.getElementById(`official-note-${q.id}`);
+      if (correctBtn) correctBtn.classList.add('correct');
+      if (noteBox) noteBox.classList.add('revealed');
+      // Disable buttons
+      for (let i = 0; i < q.options.length; i++) {
+        const btn = document.getElementById(`q-${q.id}-opt-${i}`);
+        if (btn) btn.disabled = true;
+      }
+    });
+  } else {
+    resetExam();
+  }
+}
+
+// ==========================================================
+// Official Answer Key Dossier (Dedicated Reference Section)
+// ==========================================================
+function renderOfficialDossierKey() {
+  const container = document.getElementById('official-dossier-container');
+  if (!container) return;
+
+  container.innerHTML = QUIZ_QUESTIONS.map(q => `
+    <div class="dossier-card" style="background:var(--bg-surface); border:1px solid var(--border-hairline); border-left:4px solid var(--ink-cobalt); border-radius:var(--radius-md); padding:1.6rem; margin-bottom:1.5rem; box-shadow:var(--shadow-subtle);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; border-bottom:1px solid var(--border-hairline); padding-bottom:0.5rem;">
+        <span style="font-family:var(--font-mono); font-weight:700; color:var(--ink-cobalt); font-size:0.9rem;">QUESTION ${q.id.toString().padStart(2, '0')}</span>
+        <span style="font-size:0.8rem; text-transform:uppercase; font-weight:700; color:var(--text-muted);">${q.category} &bull; ${q.ruleTag}</span>
+      </div>
+
+      <div style="font-family:var(--font-serif); font-size:1.2rem; font-weight:600; color:var(--text-headline); margin-bottom:0.8rem;">
+        ${escapeHtml(q.question)}
+      </div>
+
+      <div style="background:var(--ink-cobalt-soft); border:1px solid rgba(59,130,246,0.25); border-radius:var(--radius-sm); padding:0.6rem 0.9rem; margin-bottom:1rem; display:inline-flex; align-items:center; gap:0.6rem;">
+        <strong style="color:var(--ink-cobalt);">Correct Answer:</strong>
+        <span style="font-weight:700; color:var(--text-headline);">(${q.correctLetter}) ${escapeHtml(q.correctText)}</span>
+      </div>
+
+      <!-- User's Exact Note verbatim -->
+      <div style="font-size:0.98rem; line-height:1.65; color:var(--text-headline); margin-bottom:0.8rem; background:var(--bg-well); padding:1rem; border-radius:var(--radius-sm);">
+        <strong style="color:var(--ink-amber);"><i class="fa-solid fa-feather-pointed"></i> Master Note:</strong> ${escapeHtml(q.officialNote)}
+      </div>
+
+      <div class="ar-font" style="font-size:0.92rem; color:var(--text-muted); padding-top:0.4rem;">
+        <strong style="color:var(--text-headline);">التحليل الإيضاحي:</strong> ${escapeHtml(q.explanation_ar)}
+      </div>
+    </div>
+  `).join('');
+}
+
+// Escaping
 function escapeHtml(text) {
+  if (!text) return '';
   const div = document.createElement('div');
   div.innerText = text;
   return div.innerHTML;
